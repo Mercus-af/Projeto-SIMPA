@@ -1,0 +1,585 @@
+{
+  "identificador": "professor_2026_2",
+  "origem": "Material disponibilizado pelo professor ao grupo",
+  "curso": "Engenharia de Software",
+  "sintetico": true,
+  "tabelas": [
+    {
+      "nome": "cursos",
+      "linhas": 1,
+      "sha256": "13c0f2fc6b5c550eb3db3e43e108bf1b0a8304c853c640bb8e570c5d9bb6387d",
+      "campos": {
+        "curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "nome": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "grau": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "total_periodos": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "disciplinas_por_periodo": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "modalidade": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "cidade_sede": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "uf_sede": {
+          "tipo": "TEXT",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "periodos_curriculares",
+      "linhas": 8,
+      "sha256": "c8143036f6179c63d9873b248d8f0be5601e883eb4532ba5235b331a664404fd",
+      "campos": {
+        "periodo_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "numero_periodo": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "quantidade_disciplinas": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "carga_horaria_prevista": {
+          "tipo": "INTEGER",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "disciplinas",
+      "linhas": 40,
+      "sha256": "c0fa7fea634237968208c34e33f7c6ad65e817cd8c98cf349d6f9408b3043f00",
+      "campos": {
+        "disciplina_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "periodo_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "codigo": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "nome": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "carga_horaria": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "tipo": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "indice_dificuldade_sintetico": {
+          "tipo": "REAL",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "cidades",
+      "linhas": 15,
+      "sha256": "3139849ddd84d2d98c688594571be7a8a78a82410419dac861743cb93241f45e",
+      "campos": {
+        "cidade_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "nome": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "uf": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "distancia_rodoviaria_aprox_km": {
+          "tipo": "REAL",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "docentes",
+      "linhas": 18,
+      "sha256": "60a3cf0acd4bc3a4ac769a07af4d7737a60713fe680bf7448b4c00f5f348513c",
+      "campos": {
+        "docente_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "nome_sintetico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "titulacao": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "regime_trabalho": {
+          "tipo": "TEXT",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "alunos",
+      "linhas": 120,
+      "sha256": "4cb1402b33b41c3a8c43bbdd34c3716914fb49da30664d518a4c189356e1708a",
+      "campos": {
+        "aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "codigo_academico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "nome_sintetico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "data_nascimento": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "genero_autodeclarado": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "origem_dado": {
+          "tipo": "TEXT",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "enderecos_alunos",
+      "linhas": 120,
+      "sha256": "411bd7f90636f89cac929d3435fc9d40796bf81638936d839c7bfe01f8e1563c",
+      "campos": {
+        "endereco_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "cidade_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "logradouro_sintetico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "numero_sintetico": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "complemento_sintetico": {
+          "tipo": "TEXT",
+          "nulo": true
+        },
+        "bairro_sintetico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "cep_sintetico": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "tempo_deslocamento_min": {
+          "tipo": "INTEGER",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "perfis_socioeconomicos",
+      "linhas": 120,
+      "sha256": "14391496433aaef8903f555070bbb9492d9f77fd5dd32b9e3e14fce4b3cd93a5",
+      "campos": {
+        "perfil_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "data_referencia": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "renda_pessoal_mensal": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "renda_familiar_mensal": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "pessoas_domicilio": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "trabalha": {
+          "tipo": "BOOLEAN",
+          "nulo": false
+        },
+        "horas_trabalho_semana": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "dependentes": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "primeira_geracao_superior": {
+          "tipo": "BOOLEAN",
+          "nulo": false
+        },
+        "qualidade_internet": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "escola_publica_origem": {
+          "tipo": "BOOLEAN",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "tipos_bolsa",
+      "linhas": 4,
+      "sha256": "08d701df32ff9465798e41b16301b6dabc768702b36ec4711232180d5432b354",
+      "campos": {
+        "tipo_bolsa_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "nome": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "categoria": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "percentual": {
+          "tipo": "REAL",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "bolsas_alunos",
+      "linhas": 53,
+      "sha256": "ff9cbd3148eaad5efafea0155e45a78ce74ad4cacfec380cbe91a1dd407968d4",
+      "campos": {
+        "bolsa_aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "tipo_bolsa_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "data_inicio": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "data_fim": {
+          "tipo": "DATE",
+          "nulo": true
+        },
+        "status": {
+          "tipo": "TEXT",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "matriculas_curso",
+      "linhas": 120,
+      "sha256": "33677df9b23fbeee33e9b4e278cfd87b09b8baa1b6c315eb089ac705a67b2824",
+      "campos": {
+        "matricula_curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "aluno_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "data_ingresso": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "ano_ingresso": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "semestre_ingresso": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "periodo_atual": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "turno": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "status": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "forma_ingresso": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "data_referencia": {
+          "tipo": "DATE",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "turmas",
+      "linhas": 320,
+      "sha256": "e783f28cf671f7c2099ba5c6d94135c8ed0d92d3322bef0067efc88f1b92b2a6",
+      "campos": {
+        "turma_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "disciplina_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "docente_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "ano_letivo": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "semestre_letivo": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "codigo_turma": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "turno": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "modalidade": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "vagas": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "carga_horaria": {
+          "tipo": "INTEGER",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "registros_academicos",
+      "linhas": 2949,
+      "sha256": "7a3c98553e412592bb44ecdbf813f97901a34b800006c80d9b6c7fde689b1112",
+      "campos": {
+        "registro_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "matricula_curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "turma_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "tentativa": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "situacao": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "nota_n1": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "nota_n2": {
+          "tipo": "REAL",
+          "nulo": true
+        },
+        "nota_projeto": {
+          "tipo": "REAL",
+          "nulo": true
+        },
+        "nota_parcial": {
+          "tipo": "REAL",
+          "nulo": true
+        },
+        "nota_final": {
+          "tipo": "REAL",
+          "nulo": true
+        },
+        "frequencia_percentual": {
+          "tipo": "REAL",
+          "nulo": true
+        },
+        "faltas_horas": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "carga_horaria_cursada": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "data_atualizacao": {
+          "tipo": "DATE",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "indicadores_risco",
+      "linhas": 120,
+      "sha256": "f0de6e503865b4fb29b1fe134523e8d98d3eb78b3691ca843cfaf11ee59b19b1",
+      "campos": {
+        "indicador_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "matricula_curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "data_referencia": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "media_historica": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "media_periodo_atual": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "frequencia_media": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "reprovacoes": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "tendencia_nota_por_periodo": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "score_risco_percentual": {
+          "tipo": "REAL",
+          "nulo": false
+        },
+        "classificacao_risco": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "motivos_risco": {
+          "tipo": "TEXT",
+          "nulo": false
+        }
+      }
+    },
+    {
+      "nome": "desfechos_alunos",
+      "linhas": 120,
+      "sha256": "810e160f9d416296deff17127c74e8f704ff83d335d4d22cd9217aad21a09337",
+      "campos": {
+        "desfecho_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "matricula_curso_id": {
+          "tipo": "INTEGER",
+          "nulo": false
+        },
+        "inicio_janela": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "fim_janela": {
+          "tipo": "DATE",
+          "nulo": false
+        },
+        "evasao_observada": {
+          "tipo": "BOOLEAN",
+          "nulo": false
+        },
+        "tipo_desfecho": {
+          "tipo": "TEXT",
+          "nulo": false
+        },
+        "data_evento_ou_censura": {
+          "tipo": "DATE",
+          "nulo": false
+        }
+      }
+    }
+  ]
+}

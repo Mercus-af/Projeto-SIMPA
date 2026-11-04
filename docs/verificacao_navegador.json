@@ -1,0 +1,29 @@
+{
+  "professor": {
+    "cards": 4,
+    "mediaVA2": "15,4",
+    "disciplinas": 5,
+    "mediaVA1": "71,5"
+  },
+  "student": {
+    "cards": 4,
+    "linksProibidos": 0,
+    "alunosVisiveis": [
+      3
+    ],
+    "idsNotas": [
+      3
+    ],
+    "disciplinas": 5,
+    "pendencias": 35,
+    "mediaFinal": null,
+    "zero": true,
+    "bloqueio": 403
+  },
+  "mobile": {
+    "viewport": 390,
+    "conteudo": 390
+  },
+  "erros": [],
+  "falhas": []
+}

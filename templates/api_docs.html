@@ -1,0 +1,24 @@
+{% extends 'base.html' %}{% block content %}
+<h1>API — perfis e VAs</h1><p class="curso-note">A sessão identifica a conta no servidor. Professor acessa somente suas ofertas de turma/disciplina; aluno acessa somente a própria matrícula. Não é possível mudar perfil enviando um campo no JSON.</p>
+<section class="panel curso-panel"><div class="table-scroll"><table class="curso-table"><thead><tr><th>Método</th><th>Rota</th><th>Uso</th></tr></thead><tbody>
+<tr><td>GET</td><td><a href="/api/dados">/api/dados</a></td><td>Dados limitados ao usuário autenticado</td></tr>
+<tr><td>GET</td><td><a href="/api/analises?va=2">/api/analises?va=2</a></td><td>Estatística, resultados, correlação e regressão em escala 0–100</td></tr>
+<tr><td>GET</td><td><a href="/api/dataset-professor">/api/dataset-professor</a></td><td>Professor: base sintética de Engenharia de Software, com filtros semestre (AAAA-1 ou AAAA-2) e aluno_id. Estatísticas por tentativa, cobertura, Pearson e histórico individual com regressão. Não converte notas em VAs.</td></tr>
+<tr><td>GET</td><td>/api/meu-boletim</td><td>Somente aluno: suas VAs e componentes</td></tr>
+<tr><td>GET / POST</td><td>/api/alunos</td><td>Somente professor: consulta ou cadastro nas suas turmas</td></tr>
+<tr><td>GET / POST</td><td>/api/turmas</td><td>Consulta dos vínculos disponíveis; professor pode cadastrar turma e selecionar suas disciplinas ativas</td></tr>
+<tr><td>GET</td><td>/api/disciplinas</td><td>Disciplinas disponíveis no vínculo acadêmico</td></tr>
+<tr><td>GET / POST</td><td>/api/atividades</td><td>Consulta; professor pode criar APS ou Daily</td></tr>
+<tr><td>GET / POST</td><td>/api/atividades/ID/notas</td><td>Aluno consulta apenas suas notas; professor lança notas na própria disciplina</td></tr>
+<tr><td>POST</td><td>/api/vas/composicao</td><td>Professor: ajustar limites da composição, preservando notas existentes</td></tr>
+<tr><td>POST</td><td>/api/vas/encerrar</td><td>Professor: encerrar VA completa ou reabrir para correção</td></tr>
+<tr><td>POST</td><td>/api/frequencias</td><td>Professor: registrar aulas e presenças por aluno/disciplina/VA</td></tr>
+<tr><td>POST</td><td>/api/importacao/alunos · /api/importacao/registros</td><td>Professor: CSV/XLSX com validação de vínculos e limites</td></tr>
+</tbody></table></div>
+<p class="curso-note">Filtros de análise: <code>turma_id</code>, <code>disciplina_id</code> e <code>va</code> (1, 2 ou 3). VA2 é o padrão. Bimestre não é mais aceito.</p>
+<p class="curso-note">POST JSON: <code>Content-Type: application/json</code> e <code>X-CSRF-Token</code>. O token da sessão está em <code>document.querySelector('meta[name="csrf-token"]').content</code>. Upload usa multipart, campo <code>arquivo</code>.</p>
+<p class="curso-note">Criar atividade: <code>{"turma_id":1,"disciplina_id":2,"va":2,"tipo":"APS","titulo":"APS da aula"}</code>. Substitua os IDs pelos vínculos da conta.</p>
+<p class="curso-note">Cadastrar turma: <code>{"identificador":"IA-NOTURNO","nome":"Turma de IA","ano_letivo":2026,"semestre":2,"situacao":"ativa","disciplinas":[1,2]}</code>. Use IDs de disciplinas ativas da sua conta; ao menos uma é obrigatória. O cadastro prepara as três VAs e vincula o professor às disciplinas selecionadas.</p>
+<p class="curso-note">Lançar notas: <code>{"notas":[{"aluno_id":3,"nota":0},{"aluno_id":4,"nota":null}]}</code>. Zero é nota válida; null significa pendente.</p>
+<p class="curso-note">Retornos: 201 criado; 200 consultado/salvo; 400 token de formulário inválido; 401 sem login; 403 sem permissão; 409 duplicidade; 422 regra de negócio; 503 banco indisponível.</p></section>
+{% endblock %}

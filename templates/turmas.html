@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">CATÁLOGO ACADÊMICO</p><h1>Turmas</h1><p class="muted">Consulte as turmas e seus dados acadêmicos.</p></div><a class="button button-primary" href="{{ url_for('cadastro_turma') }}">＋ Cadastrar turma</a></div>
+<section class="panel table-panel"><div class="toolbar"><label class="search-form"><span>⌕</span><input id="tableSearch" type="search" placeholder="Buscar turma..." aria-label="Buscar turma"></label><span class="muted small">{{ turmas|length }} turmas cadastradas</span></div><div class="table-scroll"><table id="dataTable"><thead><tr><th>Código</th><th>Turma</th><th>Período</th><th>Alunos</th><th>Disciplinas</th></tr></thead><tbody>{% for turma in turmas %}<tr><td>{{ turma.codigo }}</td><td><strong>{{ turma.nome }}</strong></td><td>{{ turma.periodo }}</td><td>{{ turma.alunos }}</td><td>{{ turma.disciplinas }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

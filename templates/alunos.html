@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">GESTÃO ACADÊMICA</p><h1>Alunos</h1><p class="muted">{{ alunos|length }} alunos encontrados na consulta.</p></div><a class="button button-primary" href="{{ url_for('cadastro_aluno') }}">＋ Novo aluno</a></div>
+<section class="panel table-panel"><div class="toolbar"><form class="search-form" method="get"><span>⌕</span><input name="q" value="{{ query }}" placeholder="Buscar por nome ou matrícula..." aria-label="Buscar aluno"><button class="button button-secondary" type="submit">Buscar</button></form><span class="muted small">Lista de alunos</span></div>
+<div class="table-scroll"><table><thead><tr><th>Aluno</th><th>Matrícula</th><th>Turma</th><th>Pontos parciais · VA2</th><th>Frequência</th><th></th></tr></thead><tbody>
+{% for aluno in alunos %}<tr><td><a class="student-cell" href="{{ url_for('perfil_aluno', aluno_id=aluno.id) }}"><span class="avatar">{{ aluno.nome[:1] }}</span><strong>{{ aluno.nome }}</strong></a></td><td>{{ aluno.matricula }}</td><td>{{ aluno.turma }}</td><td><strong>{{ fmt(aluno.media) }}</strong></td><td>{{ fmt(aluno.frequencia) }}%</td><td><a class="row-action" href="{{ url_for('perfil_aluno', aluno_id=aluno.id) }}" aria-label="Abrir perfil">↗</a></td></tr>{% else %}<tr><td colspan="6" class="empty-state">Nenhum aluno encontrado para essa busca.</td></tr>{% endfor %}
+</tbody></table></div><div class="table-footer"><span class="muted small">Dados consultados no PostgreSQL</span><span class="pagination"><button disabled>‹</button><button class="current">1</button><button disabled>›</button></span></div></section>
+{% endblock %}

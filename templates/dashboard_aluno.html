@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}
+<div class="page-heading"><div><p class="eyebrow">ÁREA DO ALUNO</p><h1>Meu painel</h1><p class="muted">{{ aluno.nome if aluno else usuario_nome }} · suas notas e avaliações.</p></div><a class="button button-primary" href="{{ url_for('minhas_notas') }}">Ver composição das notas →</a></div>
+<div class="metric-grid">
+ <article class="metric-card"><span class="metric-label">Disciplinas</span><strong class="metric-value">{{ analise.resultados|length }}</strong><span class="metric-note">Seu vínculo acadêmico</span></article>
+ <article class="metric-card"><span class="metric-label">VA em andamento</span><strong class="metric-value">VA2</strong><span class="metric-note">Segunda avaliação do período</span></article>
+ <article class="metric-card"><span class="metric-label">Pontos médios na VA2</span><strong class="metric-value">{{ fmt(analise.indicadores.mediaGeral) }}<span class="metric-unit">/100</span></strong><span class="metric-note">Resultado parcial</span></article>
+ <article class="metric-card"><span class="metric-label">Avaliações pendentes</span><strong class="metric-value">{{ analise.indicadores.pendencias }}</strong><span class="metric-note">Nas atividades já cadastradas da VA2</span></article>
+</div>
+<section class="panel curso-panel"><div class="panel-heading"><h2>Minhas disciplinas</h2><span class="pill">VA1 · VA2 · VA3</span></div>
+<div class="table-scroll"><table class="curso-table"><thead><tr><th>Disciplina</th><th>VA1</th><th>VA2</th><th>VA3</th><th>Média final</th><th></th></tr></thead><tbody>
+{% for r in analise.resultados %}<tr><td class="disciplina-cell"><strong>{{ r.disciplina }}</strong></td>{% for v in r.vas %}<td class="nota-cell">{{ fmt(v.parcial) }}<small>{{ v.status }}</small></td>{% endfor %}<td>{{ fmt(r.media_final) }}</td><td><a class="text-link" href="{{ url_for('minhas_notas') }}#disciplina-{{ r.disciplina_id }}">Detalhes →</a></td></tr>{% else %}<tr><td colspan="6">Sua conta ainda não possui matrícula vinculada a disciplinas.</td></tr>{% endfor %}
+</tbody></table></div><p class="curso-note">A média final é (VA1 + VA2 + VA3) ÷ 3 e aparece após o encerramento das três VAs. Avaliação pendente não vira zero. A composição de 100 pontos ainda é provisória.</p></section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{
+  "data": "2026-11-01",
+  "versao": "2.3",
+  "testes": {
+    "total": 34,
+    "passaram": 34,
+    "banco": "descartavel/PGlite/PostgreSQL"
+  },
+  "navegador": {
+    "acesso_pelo_botao": true,
+    "formulario": true,
+    "cadastro_salvo": true,
+    "consulta_na_lista": true,
+    "erros_console": 0
+  },
+  "regras": {
+    "duplicidade_por_identificador_ano_semestre": "409",
+    "permissoes": "professor e disciplinas ativas vinculadas",
+    "va1_va2_va3": "preparadas sem notas"
+  },
+  "dados_reais": "Nenhuma turma ficticia criada na base de apresentacao",
+  "capturas": [
+    "capturas/cadastro-turma.png",
+    "capturas/turma-cadastrada.png"
+  ]
+}

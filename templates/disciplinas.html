@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">CATÁLOGO ACADÊMICO</p><h1>Disciplinas</h1><p class="muted">Consulte as disciplinas disponíveis no sistema.</p></div></div>
+<section class="panel table-panel"><div class="toolbar"><label class="search-form"><span>⌕</span><input id="tableSearch" type="search" placeholder="Buscar disciplina..." aria-label="Buscar disciplina"></label><span class="muted small">{{ disciplinas|length }} disciplinas</span></div><div class="table-scroll"><table id="dataTable" class="curso-table"><thead><tr><th>Código</th><th>Disciplina</th><th>Área</th><th>Situação</th></tr></thead><tbody>{% for d in disciplinas %}<tr><td>{{ d.codigo }}</td><td class="disciplina-cell"><strong>{{ d.nome }}</strong></td><td>{{ d.area }}</td><td>{{ d.situacao }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

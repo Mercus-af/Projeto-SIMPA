@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block page_styles %}
+<link rel="stylesheet" href="{{ url_for('static',filename='dashboard/style.css') }}">
+{% endblock %}
+{% block content %}
+<div class="page-heading dashboard-heading">
+  <div><p class="eyebrow">VISÃO GERAL</p><h1>Painel de controle</h1><p class="muted">Os principais dados acadêmicos, em um só lugar.</p></div>
+  <div class="dashboard-filters" aria-label="Filtros do dashboard">
+    {% include 'seletor_base.html' %}
+    <label for="filtro-turma">Turma<select id="filtro-turma"><option value="">Todas as turmas</option></select></label>
+    <label for="filtro-va">Avaliação<select id="filtro-va"><option value="1">VA1</option><option value="2" selected>VA2</option><option value="3">VA3</option></select></label>
+  </div>
+</div>
+<p id="dashboard-aviso" class="flash" role="alert" hidden></p>
+<div id="dashboard-conteudo" aria-busy="true">
+  <section class="metric-grid" aria-label="Indicadores acadêmicos">
+    <article class="metric-card"><span class="metric-label">Total de alunos</span><strong class="metric-value" id="kpi-total">—</strong><span class="metric-note">No período selecionado</span><span class="metric-symbol" aria-hidden="true">♙</span></article>
+    <article class="metric-card"><span class="metric-label">Pontos médios da VA</span><strong class="metric-value"><span id="kpi-media">—</span><span class="metric-unit">/100</span></strong><span class="metric-note">Resultado parcial</span><span class="metric-symbol" aria-hidden="true">↗</span></article>
+    <article class="metric-card"><span class="metric-label">Frequência média</span><strong class="metric-value" id="kpi-frequencia">—</strong><span class="metric-note">Presença nas aulas</span><span class="metric-symbol" aria-hidden="true">◷</span></article>
+    <article class="metric-card"><span class="metric-label">Turmas ativas</span><strong class="metric-value" id="kpi-turmas">—</strong><span class="metric-note" id="periodo-label">Base acadêmica</span><span class="metric-symbol" aria-hidden="true">▦</span></article>
+  </section>
+  <div class="dashboard-grid">
+    <section class="panel chart-panel">
+      <div class="panel-heading"><div><h2>Pontos lançados por disciplina</h2><p class="muted">Média parcial na VA selecionada, de 0 a 100.</p></div><span class="pill" id="va-label">VA2</span></div>
+      <div id="grafico-notas" class="dashboard-chart" role="img" aria-label="Média das notas por disciplina"></div>
+      <div class="dashboard-statistics"><span>Mediana <strong id="nota-mediana">—</strong></span><span>Desvio-padrão <strong id="nota-desvio">—</strong></span></div>
+      <p class="dashboard-insight" id="resumo-evolucao"></p>
+    </section>
+    <section class="panel attendance-panel">
+      <div class="panel-heading"><div><h2>Frequência</h2><p class="muted">Presença no período selecionado.</p></div></div>
+      <div class="dashboard-attendance" id="grafico-frequencia" role="img" aria-label="Percentual médio de presença"><span id="frequencia-centro">—</span><small>presença</small></div>
+      <p class="chart-caption"><span class="legend-dot"></span>Presenças ÷ aulas registradas</p>
+    </section>
+  </div>
+  <section class="panel table-panel">
+    <div class="panel-heading"><h2>Últimos cadastros</h2><a class="text-link" href="{{ url_for('alunos') }}">Ver todos →</a></div>
+    <div class="table-scroll"><table><thead><tr><th>Nome</th><th>Matrícula</th><th>Turma</th><th>Pontos na VA</th><th>Frequência</th><th aria-label="Perfil"></th></tr></thead><tbody id="alunos-recentes"><tr><td colspan="6" class="empty-state">Carregando alunos…</td></tr></tbody></table></div>
+    <p class="dashboard-table-note" id="resumo-cadastros" aria-live="polite"></p>
+  </section>
+</div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ url_for('static',filename='vendor/plotly.min.js') }}" defer></script>
+<script type="module" src="{{ url_for('static',filename='dashboard/js/dashboard.js') }}"></script>
+{% endblock %}

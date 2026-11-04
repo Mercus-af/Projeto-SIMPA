@@ -1,0 +1,4 @@
+<label for="seletor-base">Base de dados<select id="seletor-base">
+  <option value="{{ url_for('dashboard') }}" {{ 'selected' if not base_dataset else '' }}>Curso de IA · VAs</option>
+  <option value="{{ url_for('dashboard_dataset') }}" {{ 'selected' if base_dataset else '' }}>Dataset do professor</option>
+</select></label>

@@ -1,0 +1,27 @@
+{
+  "data": "2026-10-30",
+  "testes": {
+    "total": 29,
+    "passaram": 29,
+    "banco": "PGlite/PostgreSQL descartavel na porta 55444"
+  },
+  "navegador": {
+    "seletor_base": true,
+    "alunos_semestre_atual": 120,
+    "registros_semestre_atual": 600,
+    "notas_disponiveis": 597,
+    "linhas_tabela": 5,
+    "aluno_historico": 120,
+    "semestres_historico": 7,
+    "projecao_2026_2": 67.29,
+    "filtro_2025_2_semestres": 6,
+    "projecao_2026_1": 66.27,
+    "erros_console": 0
+  },
+  "base_local": {
+    "importacao": "concluida",
+    "idempotencia": "ja_importado",
+    "tabelas_anteriores_inalteradas": 16
+  },
+  "captura": "capturas/dataset-historico.png"
+}

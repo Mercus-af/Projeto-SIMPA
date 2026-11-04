@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}
+<div class="page-heading"><div><p class="eyebrow">BASE ACADÊMICA</p><h1>Importação de dados</h1><p class="muted">CSV ou XLSX · até 2 MB e 10.000 linhas. O sistema aceita as linhas válidas e explica as recusas.</p></div></div>
+<section class="panel form-panel"><form id="importar-form"><div class="form-grid">
+<div class="field"><label class="field-label" for="tipo">Tipo de arquivo</label><select class="input" id="tipo"><option value="alunos">Alunos</option><option value="registros">Notas por atividade</option></select></div>
+<div class="field"><label class="field-label" for="arquivo">Arquivo</label><input class="input" type="file" id="arquivo" accept=".csv,.xlsx" required></div></div>
+<p><a class="text-link" id="modelo-link" href="/api/importacao/modelo/alunos">Baixar modelo vazio</a></p><p class="muted">Notas: informe matrícula, atividade_id e nota. O ID aparece no endereço da tela de lançamento da atividade. Somente suas turmas e disciplinas são aceitas. Notas já preenchidas são recusadas na importação; corrija pela tela Avaliações.</p>
+<button class="button button-primary" type="submit" id="enviar">Importar arquivo</button></form><p id="resultado-importacao" role="status"></p><div id="erros-importacao"></div></section>
+<script src="{{ url_for('static',filename='js/importacao_integrada.js') }}" defer></script>
+{% endblock %}

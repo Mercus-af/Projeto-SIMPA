@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% block content %}
+<div class="page-heading"><div><p class="eyebrow">BOLETIM INDIVIDUAL</p><h1>{{ aluno.nome if aluno else usuario_nome }}</h1><p class="muted">{{ aluno.matricula if aluno else '' }} · notas por disciplina e VA.</p></div>{% if eh_professor %}<a class="button button-ghost" href="{{ url_for('alunos') }}">Voltar aos alunos</a>{% endif %}</div>
+<p class="curso-note">Composição provisória: APS + Dailys até 30, A360 até 10, VRAU até 30 e AFE até 30. Consulte a composição de cada disciplina abaixo. O critério de aprovação ainda não foi definido.</p>
+{% for r in analise.resultados %}
+<section class="panel curso-panel" id="disciplina-{{ r.disciplina_id }}"><div class="curso-boletim-title"><div><h2>{{ r.disciplina }}</h2><p class="curso-vinculo">{{ r.codigo }} · {{ r.turma }}</p></div><span class="pill">0 a 100 pontos</span></div>
+{% for v in r.vas %}{% set c=v.componentes %}
+<div class="curso-va-card"><div class="curso-va-head"><h3>VA{{ v.va }} <span class="curso-status {{ v.status|lower }}">{{ v.status }}</span></h3><strong>{{ fmt(v.parcial) }}<span class="metric-unit">/100</span></strong></div>
+<div class="curso-components">
+ <div class="curso-component">APS + Dailys{% set soma=none if c.APS.obtido is none and c.DAILY.obtido is none else (c.APS.obtido or 0)+(c.DAILY.obtido or 0) %}<strong>{{ fmt(soma) }}</strong><small>até {{ fmt(v.atividades_previstas) }} pontos</small></div>
+ {% for tipo in ['A360','VRAU','AFE'] %}<div class="curso-component">{{ tipo }}<strong>{{ fmt(c[tipo].obtido) }}</strong><small>até {{ fmt(c[tipo].maximo) }} pontos</small></div>{% endfor %}
+</div>
+{% if not v.fechada %}<p class="curso-note">{{ v.pendencias }} avaliação(ões) pendente(s) entre as atividades cadastradas.{% if not v.planejada %} APS + Dailys: {{ fmt(v.atividades_distribuidas) }} de {{ fmt(v.atividades_previstas) }} pontos distribuídos em atividades.{% endif %} O resultado permanece parcial.</p>{% endif %}
+<details class="curso-detail"><summary>Ver atividades e notas da VA{{ v.va }}</summary><div class="table-scroll"><table class="curso-table"><thead><tr><th>Atividade</th><th>Tipo</th><th>Nota</th><th>Máximo</th></tr></thead><tbody>{% for a in v.atividades %}<tr><td>{{ a.titulo }}</td><td>{{ a.tipo }}</td><td>{{ 'Pendente' if a.nota is none else fmt(a.nota) }}</td><td>{{ fmt(a.maximo) }}</td></tr>{% endfor %}</tbody></table></div></details>
+</div>{% endfor %}
+<div class="curso-final"><span>Média final</span><strong>{{ fmt(r.media_final) }}</strong><small>{% if r.media_final is none %}Aguardando as três VAs encerradas.{% else %}(VA1 + VA2 + VA3) ÷ 3 · escala de 0 a 100.{% endif %}</small></div></section>
+{% else %}<section class="panel curso-no-offer">Nenhuma disciplina disponível neste vínculo acadêmico.</section>{% endfor %}
+{% endblock %}

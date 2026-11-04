@@ -1,0 +1,31 @@
+.curso-note{font-size:11px;color:var(--muted);margin:12px 0 18px;line-height:1.7}
+.curso-toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:20px}
+.curso-toolbar label{display:grid;gap:6px;font-size:11px;min-width:120px;max-width:100%}
+.curso-toolbar .input{height:40px}.curso-toolbar .oferta-select{min-width:0;width:min(620px,100%)}
+.curso-panel{padding:22px;margin-bottom:16px}.curso-panel+.curso-panel{margin-top:16px}
+.curso-detail{border-top:1px solid var(--line);padding-top:16px;margin-top:18px}
+.curso-detail summary{cursor:pointer;color:var(--slate);font-size:12px;font-weight:600}
+.curso-detail[open] summary{margin-bottom:18px}
+.curso-status{display:inline-block;padding:3px 8px;border-radius:5px;background:var(--slate-soft);color:var(--slate);font-size:10px;white-space:nowrap}
+.curso-status.pendente{background:#f2f1ef;color:#777}.curso-status.parcial{background:#e9eef1;color:#536b7b}
+.curso-va-card{padding:18px;border:1px solid var(--line);border-radius:12px;margin-top:12px}
+.curso-va-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.curso-va-head h3{margin:0;font-size:14px}.curso-va-head strong{font-size:22px}
+.curso-components{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.curso-component{padding:10px 12px;background:var(--canvas);border-radius:8px;font-size:10px;color:var(--muted)}
+.curso-component strong{display:block;font-size:17px;color:var(--onyx);margin-top:4px}
+.curso-component small{color:var(--muted);font-size:10px}
+.curso-final{margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:12px}
+.curso-final strong{font-size:20px}.curso-final small{color:var(--muted)}
+.curso-table .disciplina-cell{white-space:normal;min-width:160px;max-width:370px}
+.curso-table .nota-cell{min-width:80px}.curso-table .nota-cell small{display:block;color:var(--muted);font-size:9px}
+.curso-table .input{width:100px;height:37px}.curso-table .nota-input{max-width:110px}
+.curso-table label{font-size:11px}.curso-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.curso-activity-form{margin-top:16px;max-width:820px}.curso-activity-form .form-grid{grid-template-columns:1fr 2fr 1fr}
+.curso-small-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.curso-no-offer{padding:30px}.curso-boletim-title{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.curso-boletim-title h2{max-width:720px;font-size:16px}
+.curso-vinculo{font-size:10px;color:var(--muted);margin:5px 0 0}
+.curso-locked{font-size:11px;color:var(--slate);padding:10px 0}
+@media(max-width:720px){.curso-components{grid-template-columns:repeat(2,minmax(0,1fr))}.curso-panel{padding:17px}.curso-small-grid,.curso-activity-form .form-grid{grid-template-columns:1fr}.curso-toolbar{display:grid;grid-template-columns:1fr 100px}.curso-toolbar .button{grid-column:1/-1}.curso-boletim-title{flex-direction:column}.curso-va-head{flex-wrap:wrap}.curso-toolbar label{min-width:0}}
+.turma-disciplinas{border:0;padding:0;min-width:0}.turma-disciplinas legend{font-size:13px;font-weight:600;color:var(--onyx);padding:0;margin-bottom:8px}.turma-disciplinas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px;margin-top:15px}.turma-disciplina{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:9px;padding:13px;cursor:pointer}.turma-disciplina input{accent-color:var(--slate);margin-top:3px}.turma-disciplina span{display:grid;gap:5px}.turma-disciplina strong{font-size:11px;color:var(--onyx);font-weight:600}.turma-disciplina small{font-size:10px;color:var(--muted)}

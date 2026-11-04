@@ -1,0 +1,50 @@
+[
+  {
+    "arquivo_recebido": "modulo1_estatisticas.py",
+    "sha256": "15e3fc3b5d303fb42aa0dc8e0f5b201796e0188ffaac4b5c3b4e362c46060771"
+  },
+  {
+    "arquivo_recebido": "modulo2_parte1.py",
+    "sha256": "197498af427ee38e7a93f7d0bb687ac72182a0191768a33a3791f2cb9eb30389"
+  },
+  {
+    "arquivo_recebido": "modulo2_regressao.py",
+    "sha256": "69f5687b51f650cdc20b35c7003fb5692498447a84c1c0a057ca65f702a389a4"
+  },
+  {
+    "arquivo_recebido": "modulo3_risco.py",
+    "sha256": "a666b8cc29a570b3c3ffd08fcceb974fba76066ec27a172f9d2b95956a9fd2a6"
+  },
+  {
+    "arquivo_recebido": "SIMPA_PostgreSQL.sql",
+    "sha256": "34c56558b5f5f2367a0e8906a7936598f99500edb7e757be213c6c2055f9e55d"
+  },
+  {
+    "arquivo_recebido": "Login/app.py",
+    "sha256": "f7af8fd1fb2a95620cc5e3a5545c00c2ed9e82ebfbda1461d7cf72feb6a11dda"
+  },
+  {
+    "arquivo_recebido": "Login/autenticacao.py",
+    "sha256": "2e727266f821fd00e344c677dd4533c4eb125b0af9bb055d66ef1934091e100c"
+  },
+  {
+    "arquivo_recebido": "Login/db.py",
+    "sha256": "719923955706a36191e3cd488169085809d1c1d8b5e2d44625171e657b788be9"
+  },
+  {
+    "arquivo_recebido": "dashboard-academico/index.html",
+    "sha256": "53daa249021d5d6e4230189a2720883a6b131e8c86643e999a67d791d27c292d"
+  },
+  {
+    "arquivo_recebido": "dashboard-academico/js/dashboard.js",
+    "sha256": "d4cef59b0bdc6dddadcfd6e98d34efe1a49bf2593ec0a57fb5b694d787b341af"
+  },
+  {
+    "arquivo_recebido": "dashboard-academico/js/analytics.js",
+    "sha256": "60c97a0607e6a99a68af605cb87a2a073fa54dd21c5dc2271bd8fa6f40cb8153"
+  },
+  {
+    "arquivo_recebido": "PROJETO_SIMPA_PARTE_7/SIMPA_Parte7_Importacao/importacao/servico.py",
+    "sha256": "48c28960f5c170fac367538be0b1b3092e5291451be03ed63bf5dee89f77d1d5"
+  }
+]

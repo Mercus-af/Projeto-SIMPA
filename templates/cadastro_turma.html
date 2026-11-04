@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">GESTÃO ACADÊMICA</p><h1>Cadastrar turma</h1><p class="muted">Organize uma nova turma e escolha suas disciplinas.</p></div></div>
+{% if erro %}<div class="flash" role="alert">{{ erro }}</div>{% endif %}
+<form method="post" class="panel form-panel">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-section"><div class="form-grid">
+    <div class="field span-2"><label class="field-label" for="nome">Nome da turma</label><input class="input" id="nome" name="nome" maxlength="150" value="{{ valores.get('nome','') }}" placeholder="Ex.: Inteligência Artificial — 2º período" required></div>
+    <div class="field"><label class="field-label" for="identificador">Identificador</label><input class="input" id="identificador" name="identificador" maxlength="50" value="{{ valores.get('identificador','') }}" placeholder="Ex.: IA-2-NOTURNO" required></div>
+    <div class="field"><label class="field-label" for="ano_letivo">Ano letivo</label><input class="input" id="ano_letivo" name="ano_letivo" type="number" min="1" max="32767" step="1" value="{{ valores.get('ano_letivo','') }}" required></div>
+    <div class="field"><label class="field-label" for="semestre">Semestre letivo</label><select class="input" id="semestre" name="semestre" required>{% for n in [1,2] %}<option value="{{ n }}" {{ 'selected' if valores.get('semestre')|string == n|string else '' }}>{{ n }}º semestre</option>{% endfor %}</select></div>
+    <div class="field"><label class="field-label" for="situacao">Situação</label><select class="input" id="situacao" name="situacao" required>{% for codigo,rotulo in [('ativa','Ativa'),('inativa','Inativa'),('concluida','Concluída')] %}<option value="{{ codigo }}" {{ 'selected' if valores.get('situacao') == codigo else '' }}>{{ rotulo }}</option>{% endfor %}</select></div>
+  </div></div>
+  <fieldset class="form-section turma-disciplinas"><legend>Disciplinas da turma</legend><p class="muted">Selecione pelo menos uma das disciplinas vinculadas à sua conta.</p>
+    <div class="turma-disciplinas-grid">{% for d in disciplinas %}<label class="turma-disciplina"><input type="checkbox" name="disciplinas" value="{{ d.id }}" {{ 'checked' if d.id|string in selecionadas else '' }}><span><strong>{{ d.nome }}</strong><small>{{ d.codigo }}</small></span></label>{% else %}<p class="muted">Sua conta ainda não possui disciplinas ativas. Solicite o vínculo ao responsável pelo cadastro de professores.</p>{% endfor %}</div>
+    <p class="curso-note">Você será vinculado às disciplinas selecionadas nesta nova turma. VA1, VA2 e VA3 serão preparadas com a composição provisória do curso. Alunos e notas serão cadastrados depois.</p>
+  </fieldset>
+  <div class="form-actions"><a class="button button-ghost" href="{{ url_for('turmas') }}">Cancelar</a><button class="button button-primary" type="submit" {{ 'disabled' if not disciplinas else '' }}>Cadastrar turma</button></div>
+</form>
+{% endblock %}

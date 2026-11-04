@@ -1,0 +1,10 @@
+[
+  {"id": "MAT", "nome": "Matemática", "area": "Exatas", "aulasPorBimestre": 20},
+  {"id": "POR", "nome": "Língua Portuguesa", "area": "Linguagens", "aulasPorBimestre": 20},
+  {"id": "ING", "nome": "Inglês", "area": "Linguagens", "aulasPorBimestre": 8},
+  {"id": "HIS", "nome": "História", "area": "Humanas", "aulasPorBimestre": 12},
+  {"id": "GEO", "nome": "Geografia", "area": "Humanas", "aulasPorBimestre": 12},
+  {"id": "BIO", "nome": "Biologia", "area": "Natureza", "aulasPorBimestre": 12},
+  {"id": "FIS", "nome": "Física", "area": "Natureza", "aulasPorBimestre": 12},
+  {"id": "QUI", "nome": "Química", "area": "Natureza", "aulasPorBimestre": 12}
+]

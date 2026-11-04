@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} · SIMPA</title><meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/curso.css') }}">
+  {% block page_styles %}{% endblock %}
+</head>
+<body class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">S</span><span><strong>SIMPA</strong><small>Academic intelligence</small></span></a>
+    <div class="nav-label">PRINCIPAL</div>
+    <nav class="nav">
+      <a class="{{ 'active' if request.endpoint in ['dashboard','dashboard_dataset'] else '' }}" href="{{ url_for('dashboard') }}"><span class="nav-icon">◫</span>{{ 'Dashboard' if eh_professor else 'Meu painel' }}</a>
+      {% if eh_professor %}
+      <a class="{{ 'active' if request.endpoint in ['alunos','cadastro_aluno','perfil_aluno'] else '' }}" href="{{ url_for('alunos') }}"><span class="nav-icon">♙</span>Alunos</a>
+      <a class="{{ 'active' if request.endpoint in ['turmas','cadastro_turma'] else '' }}" href="{{ url_for('turmas') }}"><span class="nav-icon">▦</span>Turmas</a>
+      <a class="{{ 'active' if request.endpoint == 'disciplinas' else '' }}" href="{{ url_for('disciplinas') }}"><span class="nav-icon">▤</span>Disciplinas</a>
+      {% else %}
+      <a class="{{ 'active' if request.endpoint == 'minhas_notas' else '' }}" href="{{ url_for('minhas_notas') }}"><span class="nav-icon">≡</span>Minhas notas</a>
+      {% endif %}
+    </nav>
+    {% if eh_professor %}
+    <div class="nav-label nav-label-spaced">ACADÊMICO</div>
+    <nav class="nav">
+      <a class="{{ 'active' if request.endpoint in ['registro_academico','avaliacoes','notas_atividade'] else '' }}" href="{{ url_for('avaliacoes') }}"><span class="nav-icon">≡</span>Avaliações</a>
+      <a class="{{ 'active' if request.endpoint == 'importacao' else '' }}" href="{{ url_for('importacao') }}"><span class="nav-icon">↑</span>Importação</a>
+    </nav>
+    {% endif %}
+    <div class="sidebar-bottom"><span class="avatar avatar-small">{{ usuario_nome[:1] }}</span><span><strong>{{ usuario_nome }}</strong><small>{{ 'Professor' if eh_professor else 'Aluno' }} · Marco 2</small></span></div>
+    <form class="sidebar-logout" method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button button-ghost" type="submit">Sair</button></form>
+  </aside>
+  <main class="main-area">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+      <div class="breadcrumb">SIMPA <span>/</span> {{ title }}</div>
+      {% if eh_professor %}<label class="top-search"><span>⌕</span><input id="globalSearch" type="search" placeholder="Buscar aluno..." aria-label="Busca rápida"><kbd>⌘ K</kbd></label>{% endif %}
+    </header>
+    <section class="page-content {{ page_class or '' }}">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for category, message in messages %}<div class="flash">{{ message }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="footer">SIMPA <span>·</span> Sistema Inteligente de Monitoramento e Predição Acadêmica</footer>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block page_scripts %}{% endblock %}
+</body>
+</html>

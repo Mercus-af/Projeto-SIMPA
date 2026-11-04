@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · SIMPA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-page">
+  <section class="login-visual">
+    <a class="brand brand-light" href="{{ url_for('login') }}"><span class="brand-mark">S</span><span><strong>SIMPA</strong><small>Academic intelligence</small></span></a>
+    <div class="login-message"><p class="eyebrow">INTELIGÊNCIA ACADÊMICA</p><h1>Dados que ajudam<br>o futuro a acontecer.</h1><p>Uma visão mais clara do desempenho acadêmico, em um só lugar.</p></div>
+    <div class="gradient-orb"></div><div class="login-footnote">Sistema Inteligente de Monitoramento e Predição Acadêmica</div>
+  </section>
+  <section class="login-form-side">
+    <form class="login-card" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="login-monogram">S</div><p class="eyebrow">BEM-VINDO DE VOLTA</p><h2>Acesse sua conta</h2><p class="muted">Entre com suas credenciais institucionais.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="flash">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+      {% if erro %}<div class="flash flash-erro" role="alert">{{ erro }}</div>{% endif %}
+      <label class="field-label" for="identificador">Matrícula ou e-mail institucional</label><input class="input" id="identificador" name="identificador" type="text" value="{{ identificador or '' }}" placeholder="Matrícula ou nome@instituicao.edu.br" autocomplete="username" autofocus required>
+      <div class="field-row"><label class="field-label" for="password">Senha</label></div>
+      <div class="password-wrap"><input class="input" id="password" name="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required><button class="password-toggle" id="passwordToggle" type="button" aria-label="Mostrar ou ocultar a senha">Mostrar</button></div>
+      <button class="button button-primary button-full" type="submit">Entrar <span>→</span></button>
+      <p class="login-note">Acesso restrito a usuários autorizados.</p>
+    </form>
+  </section>
+  <script>
+    // Botão para mostrar ou ocultar a senha (RF01). Por padrão ela fica oculta.
+    var campo = document.getElementById("password");
+    var botao = document.getElementById("passwordToggle");
+    botao.addEventListener("click", function () {
+      var oculta = campo.type === "password";
+      campo.type = oculta ? "text" : "password";
+      botao.textContent = oculta ? "Ocultar" : "Mostrar";
+    });
+  </script>
+</body>
+</html>

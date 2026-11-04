@@ -38,11 +38,22 @@ class Aluno:
 
     def calcular_cr(self):
         if not self.notas:
-            return 0.0
-        return round(sum(self.notas.values()) / len(self.notas), 2)
+            return None
+        return sum(self.notas.values()) / len(self.notas)
 
     def get_disciplinas(self):
         return self.disciplinas if self.disciplinas else "Nenhuma disciplina cadastrada."
+
+    def calcular_frequencia_global(self):
+        registros = getattr(self, 'registros_frequencia', [])
+        if not registros:
+            return None
+        if all(r.get('aulasPrevistas') is not None for r in registros):
+            aulas = sum(r['aulasPrevistas'] for r in registros)
+            return sum(r['presencas'] for r in registros) / aulas * 100 if aulas else None
+        # Sem totais de aulas, só podemos calcular a média dos percentuais.
+        valores = [r['percentual'] for r in registros if r.get('percentual') is not None]
+        return sum(valores)/len(valores) if valores else None
 
     def get_notas(self):
         return self.notas if self.notas else "Nenhuma nota cadastrada."
@@ -61,3 +72,4 @@ class Aluno:
             "cr": self.calcular_cr(),
             "em_risco": len(self.get_disciplinas_em_risco()) > 0
         }
+

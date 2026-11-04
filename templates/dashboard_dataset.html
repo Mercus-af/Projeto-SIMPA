@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block page_styles %}<link rel="stylesheet" href="{{ url_for('static',filename='dashboard/style.css') }}">{% endblock %}
+{% block content %}
+<div class="page-heading dashboard-heading">
+  <div><p class="eyebrow">ANÁLISE ACADÊMICA</p><h1>Dataset do professor</h1><p class="muted">Dados fictícios de Engenharia de Software. As notas do curso de IA continuam na outra base.</p></div>
+</div>
+<div class="dashboard-filters dataset-filters" aria-label="Filtros do dataset">
+  {% include 'seletor_base.html' %}
+  <label for="filtro-semestre">Semestre<select id="filtro-semestre" disabled><option>Carregando…</option></select></label>
+  <label for="filtro-aluno-dataset">Aluno<select id="filtro-aluno-dataset" disabled><option value="">Todos os alunos</option></select></label>
+</div>
+<p id="dataset-aviso" class="flash" role="alert" hidden></p>
+<div id="dataset-conteudo" aria-busy="true" hidden>
+  <section class="metric-grid" aria-label="Indicadores do dataset">
+    <article class="metric-card"><span class="metric-label">Alunos no recorte</span><strong class="metric-value" id="dataset-total">—</strong><span class="metric-note">Com registro no semestre</span></article>
+    <article class="metric-card"><span class="metric-label" id="dataset-media-titulo">Média das notas</span><strong class="metric-value"><span id="dataset-media">—</span><span class="metric-unit">/100</span></strong><span class="metric-note" id="dataset-cobertura">—</span></article>
+    <article class="metric-card"><span class="metric-label">Frequência média</span><strong class="metric-value" id="dataset-frequencia">—</strong><span class="metric-note">Percentuais disponíveis</span></article>
+    <article class="metric-card"><span class="metric-label">Registros acadêmicos</span><strong class="metric-value" id="dataset-registros">—</strong><span class="metric-note">Tentativas em turmas</span></article>
+  </section>
+  <div class="dashboard-grid">
+    <section class="panel chart-panel">
+      <div class="panel-heading"><div><h2 id="dataset-grafico-titulo">Notas por período da disciplina</h2><p class="muted" id="dataset-grafico-subtitulo">Médias no semestre selecionado.</p></div><span class="pill" id="dataset-semestre-label">—</span></div>
+      <div id="dataset-grafico" class="dashboard-chart" role="img" aria-label="Médias acadêmicas do dataset"></div>
+      <div class="dashboard-statistics"><span>Mediana <strong id="dataset-mediana">—</strong></span><span>Desvio-padrão <strong id="dataset-desvio">—</strong></span></div>
+      <p class="dashboard-insight" id="dataset-tendencia" aria-live="polite">Selecione um aluno para consultar seu histórico.</p>
+    </section>
+    <section class="panel attendance-panel">
+      <div class="panel-heading"><div><h2>Frequência</h2><p class="muted">Média por registro no recorte.</p></div></div>
+      <div class="dashboard-attendance" id="dataset-donut" role="img" aria-label="Frequência média"><span id="dataset-frequencia-centro">—</span><small>presença</small></div>
+      <p class="chart-caption" id="dataset-frequencia-cobertura">—</p>
+    </section>
+  </div>
+  <section class="panel table-panel">
+    <div class="panel-heading"><h2>Alunos no semestre</h2><span class="muted small" id="dataset-tabela-resumo">—</span></div>
+    <div class="table-scroll"><table><thead><tr><th>Aluno fictício</th><th>Código</th><th>Média</th><th>Frequência</th><th></th></tr></thead><tbody id="dataset-alunos"></tbody></table></div>
+    <details class="dataset-metodo"><summary>Como interpretar esta análise</summary>
+      <p id="dataset-interpretacao"></p><p id="dataset-metodo"></p>
+      <p>Dispersão populacional: variância <strong id="dataset-variancia">—</strong> pontos². Mediana e desvio-padrão descrevem as notas do recorte, inclusive quando o gráfico mostra o histórico individual.</p>
+      <p id="dataset-correlacao"></p>
+      <p id="dataset-ajuste"></p>
+      <p>A regressão usa médias finais por semestre e descreve desempenho global. A composição de disciplinas pode mudar; a projeção é exploratória e não garante desempenho. Os indicadores de risco fornecidos no dataset são preservados como referência e não alimentam estes cálculos.</p>
+    </details>
+  </section>
+</div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ url_for('static',filename='vendor/plotly.min.js') }}" defer></script>
+<script type="module" src="{{ url_for('static',filename='dashboard/js/dataset.js') }}"></script>
+{% endblock %}

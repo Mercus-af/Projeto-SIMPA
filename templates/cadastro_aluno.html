@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block content %}
+<div class="page-heading"><div><p class="eyebrow">GESTÃO ACADÊMICA</p><h1>Cadastrar aluno</h1><p class="muted">O cadastro ficará disponível nas consultas e nas análises.</p></div></div>
+<form method="post" class="panel form-panel"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="form-section"><div class="form-grid">
+<div class="field span-2"><label class="field-label" for="nome">Nome completo</label><input class="input" id="nome" name="nome" minlength="3" maxlength="120" required></div>
+<div class="field"><label class="field-label" for="matricula">Matrícula</label><input class="input" id="matricula" name="matricula" maxlength="30" required></div>
+<div class="field"><label class="field-label" for="email">E-mail institucional</label><input class="input" id="email" name="email" type="email" required></div>
+<div class="field span-2"><label class="field-label" for="turma_id">Turma</label><select class="input" id="turma_id" name="turma_id" required><option value="">Selecione</option>{% for t in turmas %}<option value="{{ t.id }}">{{ t.nome }} · {{ t.periodo }}</option>{% endfor %}</select></div>
+</div></div><div class="form-actions"><a href="/alunos" class="button button-ghost">Voltar</a><button class="button button-primary">Cadastrar aluno</button></div></form>
+{% endblock %}
