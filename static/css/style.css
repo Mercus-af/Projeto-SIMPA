@@ -6,3 +6,7 @@
 @media print{.sidebar,.topbar,.page-heading>.button,.profile-actions,.footer{display:none!important}.main-area{margin:0}.page-content{padding:0}.profile-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
 .sidebar-logout{margin-top:12px}.sidebar-logout .button-ghost{color:var(--alabaster);border-color:#34383b;min-height:32px}.sidebar-logout .button-ghost:hover{background:#202326}
+
+.cadastro-card{width:min(100%,420px)}.cadastro-card .login-monogram{margin-bottom:16px}.cadastro-card>.muted{margin-bottom:16px}.cadastro-card>.field-label{margin-top:12px;margin-bottom:5px}.cadastro-card .input{height:42px}.cadastro-ajuda{font-size:10px;color:var(--muted);margin:6px 0 0;line-height:1.6}.cadastro-enviar{margin-top:22px}.cadastro-codigo{overflow-wrap:anywhere;font-size:16px;color:var(--slate)}
+
+.password-wrap{position:relative}.password-wrap .input{padding-right:70px}.password-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--slate);font-size:11px;padding:4px}.cadastro-card .login-monogram{width:34px;height:34px;margin-bottom:10px}.cadastro-card>.field-label{margin-top:9px;margin-bottom:4px}.cadastro-card .input{height:38px}.cadastro-card>.muted{margin-bottom:10px}.cadastro-card .login-note{margin-top:12px}.cadastro-card .cadastro-enviar{margin-top:16px}

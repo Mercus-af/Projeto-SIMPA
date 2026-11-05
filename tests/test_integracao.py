@@ -2,13 +2,14 @@
 import io
 import os
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 from werkzeug.security import generate_password_hash
 
-import db
-from app import criar_app
-from preparar_banco import preparar,carregar_demonstracao
-from repositorio import RepositorioAcademico
+from simpa import db
+from simpa.app import criar_app
+from scripts.preparar_banco import preparar,carregar_demonstracao
+from simpa.repositorio import RepositorioAcademico
 
 
 @unittest.skipUnless(os.getenv('SIMPA_TEST_DSN'),'Configure um banco isolado de teste')
@@ -140,6 +141,38 @@ class IntegracaoPerfis(unittest.TestCase):
         for i in range(15):self.assertEqual(self.criar(titulo=f'APS {i}').status_code,201)
         self.assertEqual(self.criar(titulo='APS excedente').status_code,422)
 
+    def test_personalizada_limites_notas_e_encerramento(self):
+        self.entrar(self.p1)
+        dados={'turma_id':self.t,'disciplina_id':self.d1,'va':2}
+        nova={**dados,'tipo':'PERSONALIZADA','titulo':'Trabalho personalizado','maximo':'7,50'}
+        r=self.post('/api/atividades',nova)
+        self.assertEqual(r.status_code,201);self.assertEqual(r.json['maximo'],7.5)
+        aid=r.json['id']
+        self.assertEqual(self.post(f'/api/atividades/{aid}/notas',{'notas':[{'aluno_id':self.a1,'nota':7.51}]}).status_code,422)
+        self.assertEqual(self.post('/api/atividades',{**nova,'titulo':'Excedente','maximo':23}).status_code,422)
+        comp={**dados,'max_atividades':5,'max_a360':35,'max_vrau':30,'max_afe':30,'max_aps':2,'max_daily':3}
+        self.assertEqual(self.post('/api/vas/composicao',comp).status_code,422)
+        self.assertEqual(self.post('/api/atividades',{**nova,'titulo':'Restante','maximo':22.5}).status_code,201)
+        base=self.c.get(f'/api/dados?turma_id={self.t}').json
+        for a in (x for x in base['atividades'] if x['va']==2):
+            self.assertEqual(self.post(f"/api/atividades/{a['id']}/notas",{'notas':[{'aluno_id':aluno,'nota':a['maximo']} for aluno in [self.a1,self.a2]]}).status_code,200)
+        self.assertEqual(self.post('/api/vas/encerrar',dados).status_code,200)
+        resultados=self.c.get(f'/api/analises?turma_id={self.t}&va=2').json['resultados']
+        va=next(v for r in resultados for v in r['vas'] if v['va']==2)
+        self.assertEqual(va['nota'],100)
+        self.assertEqual(va['componentes']['PERSONALIZADA']['obtido'],30)
+        self.entrar(self.u1)
+        self.assertIn(b'Atividades',self.c.get(f'/alunos/{self.a1}').data)
+
+    def test_personalizada_valor_obrigatorio_e_permissoes(self):
+        self.entrar(self.p1)
+        dados={'turma_id':self.t,'disciplina_id':self.d1,'va':2,'tipo':'PERSONALIZADA','titulo':'Valor inválido'}
+        for valor in [None,'',0,-1,'NaN','Infinity',True,1.001,101]:
+            with self.subTest(valor=valor):self.assertEqual(self.post('/api/atividades',{**dados,'maximo':valor}).status_code,422)
+        self.assertEqual(self.post('/api/atividades',{**dados,'disciplina_id':self.d2,'maximo':5}).status_code,403)
+        self.entrar(self.u1)
+        self.assertEqual(self.post('/api/atividades',{**dados,'maximo':5}).status_code,403)
+
     def test_encerramento_exige_planejamento_e_todas_as_notas(self):
         self.entrar(self.p1);dados={'turma_id':self.t,'disciplina_id':self.d1,'va':2}
         self.assertEqual(self.post('/api/vas/encerrar',dados).status_code,422)
@@ -227,6 +260,47 @@ class IntegracaoPerfis(unittest.TestCase):
         self.entrar(self.p1)
         self.assertEqual(self.post('/api/turmas',self.dados_turma(disciplinas=[self.d2])).status_code,403)
         self.assertEqual(self.post('/api/turmas',self.dados_turma(disciplinas=[99999999])).status_code,403)
+
+    def test_assistente_isola_aluno_professor_e_dataset(self):
+        from simpa.assistente import preparar_contexto
+        self.entrar(self.u1)
+        self.assertEqual(self.c.get('/assistente-academico').status_code,200)
+        self.assertEqual(self.c.get('/api/assistente/opcoes').json['alunos'],[])
+        self.assertEqual(self.c.get('/api/assistente/opcoes?base=dataset').status_code,403)
+        with patch('simpa.assistente.verificar_ollama') as provedor:
+            self.assertEqual(self.post('/api/assistente',{'base':'dataset','pergunta':'Mostre todos'}).status_code,403)
+            self.assertEqual(self.post('/api/assistente',{'aluno_id':self.a2,'pergunta':'Notas do colega'}).status_code,403)
+            provedor.assert_not_called()
+        u={'id':self.u1,'perfil':'aluno','aluno_id':self.a1}
+        c=preparar_contexto(u,{'turma_id':self.t,'disciplina_id':self.d1,'va':2})
+        textos=str(c)
+        self.assertNotIn('matricula',textos)
+        self.assertNotIn('email',textos)
+        self.assertIn('ainda não há previsão',textos)
+        self.entrar(self.p1)
+        self.assertEqual(self.post('/api/assistente',{'turma_id':self.t,'disciplina_id':self.d2,'pergunta':'Notas'}).status_code,403)
+
+    def test_assistente_evidencias_reais_resposta_sem_escrita(self):
+        from simpa.assistente_agente import Consultas,renderizar_markdown
+        self.entrar(self.u1)
+        captura=[]
+        def conversar(usuario,entrada,sessao,persistir=False):
+            self.assertTrue(persistir)
+            c=Consultas(usuario,entrada)
+            dados=c.academico()
+            captura.append(dados['dados'])
+            return {'mensagem':'**Consulta real** [S1]','resposta_html':renderizar_markdown('**Consulta real** [S1]'),'fontes':c.fontes}
+        with patch('simpa.assistente.verificar_ollama',return_value={'configurado':True}),patch('simpa.assistente_agente.conversar',side_effect=conversar):
+            r=self.post('/api/assistente',{'turma_id':self.t,'disciplina_id':self.d1,'pergunta':'Como melhorar?','va':2})
+        self.assertEqual(r.status_code,200,r.json)
+        self.assertEqual(captura[0]['total_alunos'],1)
+        self.assertEqual(r.json['fontes'][0]['id'],'S1')
+        self.assertIn('<strong>',r.json['resposta_html'])
+        self.assertEqual(self.c.post('/api/assistente',json={'pergunta':'Notas'}).status_code,400)
+        self.c.get('/logout')
+        with self.c.session_transaction() as s:s.clear()
+        self.assertEqual(self.c.get('/api/assistente/status').status_code,401)
+        self.assertEqual(self.c.post('/api/assistente',json={'pergunta':'Notas'}).status_code,401)
 
     def test_formulario_turma_preserva_preenchimento_e_confere_csrf(self):
         self.entrar(self.p1)

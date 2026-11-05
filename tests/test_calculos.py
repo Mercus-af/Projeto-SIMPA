@@ -1,10 +1,10 @@
 import unittest
 from decimal import Decimal
-from academico import ResultadoVA,calcular_media_final,pontos
-from importacao.validacoes import DadosInvalidos
-from modulo1_estatisticas import ModuloEstatisticaAcademica as E
-from modulo2_parte1 import ModuloCorrelacaoFrequenciaNota as C
-from modulo2_regressao import ModuloRegressao as P
+from simpa.academico import ResultadoVA,calcular_media_final,pontos
+from simpa.importacao.validacoes import DadosInvalidos
+from simpa.modulo1_estatisticas import ModuloEstatisticaAcademica as E
+from simpa.modulo2_parte1 import ModuloCorrelacaoFrequenciaNota as C
+from simpa.modulo2_regressao import ModuloRegressao as P
 
 
 class RegrasVA(unittest.TestCase):

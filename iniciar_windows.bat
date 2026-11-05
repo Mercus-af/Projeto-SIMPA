@@ -6,7 +6,7 @@ if not exist ".venv\Scripts\python.exe" (
   .venv\Scripts\python.exe -m pip install -r requirements.txt
   if errorlevel 1 goto falha
 )
-.venv\Scripts\python.exe configurar_env.py
+.venv\Scripts\python.exe -m scripts.configurar_env
 echo Confira o .env e prepare o banco conforme o README antes do primeiro acesso.
 .venv\Scripts\python.exe app.py
 pause

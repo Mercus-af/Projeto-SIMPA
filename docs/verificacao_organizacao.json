@@ -1,0 +1,11 @@
+{
+  "data": "2026-11-05",
+  "versao": "2.9",
+  "testes": 81,
+  "resultado": "todos passaram em banco PostgreSQL descartável novo",
+  "dependencias": "pip check sem incompatibilidades",
+  "comandos": ["python -m scripts.preparar_banco --demo", "python -m scripts.importar_dataset_professor", "python app.py"],
+  "organizacao": {"backend": "simpa/", "administracao": "scripts/", "documentos_originais": "docs/originais/", "wireframes": "docs/wireframes/", "referencia_anterior": "referencias/marco_1/"},
+  "preservacao": "PDF de requisitos e arquivos do dataset sem alteração de conteúdo",
+  "credenciais": ".env e backups locais excluídos da publicação; ZIP antigo com dados privados retirado da versão atual"
+}

@@ -1,0 +1,10 @@
+*.py text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.sql text eol=lf
+*.bat text eol=crlf
+.env.example text eol=lf
+# Preserve os bytes usados na validação SHA-256 do dataset fornecido.
+data/dataset_professor/** -text

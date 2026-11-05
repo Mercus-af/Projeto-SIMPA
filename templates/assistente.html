@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block page_styles %}<link rel="stylesheet" href="{{ url_for('static',filename='css/assistente.css') }}">{% endblock %}
+{% block content %}
+<div class="ia-layout">
+<section class="panel ia-conversa" aria-label="Conversa com o assistente">
+  <button type="button" id="ia-historico-toggle" class="ia-historico-toggle" aria-controls="ia-historico" aria-expanded="false">☰ Chats</button>
+  <div id="ia-mensagens" role="log" aria-live="polite" aria-relevant="additions"><p id="ia-vazio">Como posso ajudar?</p></div>
+  <div class="ia-compositor">
+    <p id="ia-erro" role="alert" hidden></p>
+    <p id="ia-config" role="status" hidden></p>
+    <form id="ia-form" class="ia-form">
+      <label class="ia-sr-only" for="ia-pergunta">Sua mensagem</label>
+      <textarea id="ia-pergunta" rows="2" minlength="3" maxlength="1200" required placeholder="Digite sua mensagem…"></textarea>
+      <div class="ia-form-acoes">
+        <div class="ia-ferramentas">
+          <details id="ia-contexto">
+            <summary class="ia-icone" aria-label="Selecionar dados" title="Selecionar dados">⚙</summary>
+            <div class="ia-contexto-painel">
+              <h2>Dados da conversa</h2>
+              <div id="assistente-filtros" data-professor="{{ 'sim' if eh_professor else 'nao' }}">
+                {% if eh_professor %}<label for="ia-base">Base</label><select class="input" id="ia-base"><option value="curso">Curso de IA · VAs</option><option value="dataset">Dataset do professor</option></select>{% endif %}
+                <div id="ia-oferta-label"><label for="ia-oferta">Turma e disciplina</label><select class="input" id="ia-oferta"><option value="">Todos os meus vínculos</option></select></div>
+                <div id="ia-va-label"><label for="ia-va">Avaliação</label><select class="input" id="ia-va"><option value="1">VA1</option><option value="2" selected>VA2</option><option value="3">VA3</option></select></div>
+                <div id="ia-semestre-label" hidden><label for="ia-semestre">Semestre</label><select class="input" id="ia-semestre"></select></div>
+                {% if eh_professor %}<label for="ia-aluno">Aluno</label><select class="input" id="ia-aluno"><option value="">Visão do grupo</option></select>{% endif %}
+              </div>
+              <small>{{ 'Somente dados autorizados da sua conta.' if eh_professor else 'Somente dados do seu boletim.' }}</small>
+            </div>
+          </details>
+          <button class="ia-icone" type="button" id="ia-limpar" title="Novo chat" aria-label="Novo chat">↺</button>
+        </div>
+        <button class="button button-primary" type="submit" id="ia-enviar" disabled>Enviar <span aria-hidden="true">↑</span></button>
+      </div>
+    </form>
+  </div>
+</section>
+<aside id="ia-historico" class="ia-historico" aria-label="Histórico de chats">
+  <div class="ia-historico-cabecalho"><h2>Seus chats</h2><button type="button" id="ia-historico-fechar" class="ia-icone" aria-label="Fechar histórico">×</button></div>
+  <button type="button" id="ia-novo-chat" class="button button-primary">＋ Novo chat</button>
+  <p id="ia-historico-aviso" class="ia-historico-aviso" role="status"></p>
+  <ul id="ia-chats" class="ia-chats"></ul>
+  <button type="button" id="ia-chats-mais" class="button button-ghost" hidden>Carregar mais</button>
+</aside>
+</div>
+<dialog id="ia-excluir-dialog" class="ia-excluir-dialog" aria-labelledby="ia-excluir-titulo">
+  <h2 id="ia-excluir-titulo">Apagar chat?</h2>
+  <p id="ia-excluir-texto"></p>
+  <p>As mensagens desta conversa serão apagadas.</p>
+  <p id="ia-excluir-erro" role="alert" hidden></p>
+  <div class="ia-excluir-acoes"><button type="button" id="ia-excluir-cancelar" class="button button-ghost">Cancelar</button><button type="button" id="ia-excluir-confirmar" class="button button-primary">Apagar chat</button></div>
+</dialog>
+{% endblock %}
+{% block page_scripts %}<script src="{{ url_for('static',filename='js/assistente.js') }}" defer></script>{% endblock %}

@@ -1,0 +1,17 @@
+{
+  "data": "2026-11-04",
+  "versao": "2.7",
+  "testes": 74,
+  "resultado": "todos passaram em PostgreSQL descartável",
+  "casos": [
+    "valor obrigatório, positivo e finito com até duas casas decimais",
+    "limite compartilhado do bloco",
+    "nota não ultrapassa máximo da atividade",
+    "redução do bloco não invalida pontos distribuídos",
+    "personalizadas entram no cálculo e encerramento da VA",
+    "aluno e professor de outra disciplina não podem cadastrar"
+  ],
+  "navegador": "Personalizado revelou o campo; atividade de 7,5 pontos cadastrada no banco descartável; sem erros de console",
+  "captura": "capturas/avaliacao-personalizada.png",
+  "migracao": "006 amplia os tipos aceitos sem alterar notas existentes"
+}

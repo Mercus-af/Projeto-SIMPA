@@ -1,137 +1,249 @@
-# SIMPA — Marco 2: professores, alunos e VAs
+# SIMPA — Sistema Inteligente de Monitoramento e Predição Acadêmica
 
-Aplicação Flask com PostgreSQL, login, notas por atividade, estatística e dashboard enxuto baseado no wireframe. O curso usa **VA1, VA2 e VA3**, com escala de **0 a 100**. A composição continua identificada como provisória.
+Projeto do segundo período do curso de Inteligência Artificial. O SIMPA organiza dados acadêmicos, calcula indicadores estatísticos e permite acompanhar notas, frequência e pendências por aluno, turma e disciplina.
 
-## Dataset do professor — versão 2.2
+No **Marco 2**, o foco é transformar os registros em informações interpretáveis: estatística descritiva, gráficos, análise de histórico e estimativas de desempenho. O sistema também possui um assistente acadêmico com **Gemma 4 via Ollama Cloud e LangChain**, conectado às consultas autorizadas da plataforma.
 
-O seletor **Base de dados** do dashboard do professor permite alternar entre **Curso de IA · VAs** e **Dataset do professor**. A segunda opção usa o material sintético de Engenharia de Software: 120 alunos, 40 disciplinas e 2.949 registros acadêmicos. Não modifica as contas, disciplinas nem notas do curso de IA e não transforma N1/N2/projeto em VAs.
+## Tecnologias
 
-Para carregar em outra instalação, execute uma vez após preparar o banco:
+| Parte | Tecnologia |
+| --- | --- |
+| Aplicação e API | Python e Flask |
+| Banco de dados | PostgreSQL e psycopg2 |
+| Interface | HTML/Jinja, CSS e JavaScript |
+| Gráfico de notas e histórico | Plotly |
+| Estatística | NumPy e módulos Python do grupo |
+| Assistente acadêmico | LangChain, ChatOllama e Gemma 4 no Ollama Cloud |
+| Importação | CSV e XLSX, com openpyxl |
+| Formatação das respostas | MarkdownIt e Bleach |
 
-```powershell
-.venv\Scripts\python.exe importar_dataset_professor.py
+## Funcionalidades e perfis
+
+| Área | Funcionamento |
+| --- | --- |
+| Login | Acesso por matrícula ou e-mail institucional e senha |
+| Cadastrar-se | Conta de aluno vinculada à matrícula existente, mediante código do professor |
+| Dashboard do professor | Indicadores, médias por disciplina, frequência, filtros de turma/VA e últimos cadastros |
+| Meu painel / Minhas notas | Visão individual, componentes das VAs, pendências e média final |
+| Assistente acadêmico | Consultas em linguagem natural, respostas em Markdown e histórico privado de chats |
+| Alunos | Cadastro acadêmico, busca, boletim individual e código de primeiro acesso |
+| Turmas | Consulta e cadastro de turmas com disciplinas vinculadas ao professor |
+| Disciplinas | Catálogo das disciplinas disponíveis à conta |
+| Avaliações | APS, Daily ou atividade personalizada, notas, frequência e encerramento/reabertura da VA |
+| Importação | Alunos e notas por atividade a partir dos modelos do SIMPA |
+| Dataset do professor | Dados fictícios separados, com histórico por semestre e projeção |
+
+O professor acessa suas ofertas de turma/disciplina. O aluno consulta somente os próprios dados e não possui permissão de lançamento. Os controles também são aplicados na API.
+
+## Organização das pastas
+
+```text
+Projeto-SIMPA/
+├── app.py                    # Entrada para iniciar o servidor
+├── simpa/                    # Código Python da aplicação
+│   ├── app.py                # Rotas, API e criação do aplicativo Flask
+│   ├── repositorio.py        # Consultas e permissões acadêmicas
+│   ├── academico.py          # Componentes, VAs e média final
+│   ├── servico_analitico.py  # Indicadores e integração dos cálculos
+│   ├── assistente_agente.py  # Ferramentas LangChain e conversa com o Gemma
+│   ├── chats.py              # Histórico privado em PostgreSQL
+│   ├── cadastro_contas.py    # Primeiro acesso por código de uso único
+│   ├── importacao/           # Leitura, validação e processamento de arquivos
+│   └── ...                   # Autenticação, dataset, estatística e classes
+├── scripts/                  # Preparação e administração local
+├── templates/                # Páginas HTML/Jinja
+├── static/                   # CSS, JavaScript e biblioteca Plotly
+├── prompts/                  # Instruções editáveis do assistente
+├── sql/                      # Estrutura e migrações do banco
+├── data/                     # Exemplos e dataset sintético
+├── tests/                    # Testes automatizados
+├── docs/                     # Guias, PDF de requisitos e evidências
+│   ├── capturas/             # Demonstração e verificação
+│   ├── originais/            # Documentos originais do projeto
+│   └── wireframes/           # Wireframes do grupo
+├── referencias/marco_1/      # Código anterior preservado para consulta
+├── .env.example              # Modelo de configuração, sem credenciais
+├── requirements.txt          # Dependências Python
+└── iniciar_windows.bat       # Atalho para iniciar no Windows
 ```
 
-Os 15 CSVs normalizados estão incluídos em `data/dataset_professor/`, com manifesto de origem e hashes SHA-256. O importador usa uma transação, valida a edição recebida e grava no schema separado `simpa_dataset`. Repetir a mesma carga não duplica registros. Não é necessário executar o SQL SQLite fornecido no material.
+A aplicação atual é a de `simpa/`. O código anterior permanece em `referencias/marco_1/` e no histórico Git. Os documentos e o PDF existente foram preservados.
 
-No dashboard, escolha o semestre. Com todos os alunos, o gráfico compara médias por período curricular da disciplina. Ao selecionar um aluno, o mesmo gráfico mostra médias finais por semestre e uma projeção linear, quando houver ao menos dois semestres concluídos. A análise respeita o semestre consultado: não utiliza notas finais de semestres posteriores. O gráfico de frequência permanece ao lado; não foram adicionados histogramas ou rankings.
+## Instalação no Windows
 
-O semestre em andamento usa notas parciais e informa quantos registros têm nota/frequência. Ausência não vira zero. A frequência desta base é a média dos percentuais disponíveis por registro, diferente da razão presenças/aulas do curso de IA. A série temporal descreve desempenho global, com disciplinas que podem mudar entre semestres. R² mede ajuste ao histórico, não precisão futura. Indicadores prontos de risco e desfechos são preservados como referência, sem alimentar os cálculos ou previsões.
+Pré-requisitos: **Python 3.11 ou superior** e o **servidor PostgreSQL** instalado e em execução. O pgAdmin é uma interface de administração; instalar apenas o pgAdmin não instala necessariamente o servidor.
 
-API exclusiva de professores: `/api/dataset-professor?semestre=2026-2&aluno_id=120`. O filtro de aluno é opcional. Alunos autenticados continuam restritos ao próprio boletim de IA.
+1. Clone o repositório e abra o PowerShell na pasta do projeto:
 
-Veja `docs/DATASET_PROFESSOR.md` para arquitetura, critérios de interpretação e demonstração.
+   ```powershell
+   git clone https://github.com/Mercus-af/Projeto-SIMPA.git
+   cd Projeto-SIMPA
+   py -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe -m scripts.configurar_env
+   ```
 
-## Para quem já estava usando esta pasta
+2. No PostgreSQL, crie um banco vazio chamado `simpa`, pelo pgAdmin ou por SQL:
 
-Pare o servidor com `Ctrl+C`. As tabelas novas devem ser preparadas sem apagar as antigas:
+   ```sql
+   CREATE DATABASE simpa;
+   ```
+
+3. Edite o `.env` criado na raiz e informe a conexão local:
+
+   ```dotenv
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=simpa
+   DB_USER=postgres
+   DB_PASSWORD=sua_senha_local
+   ```
+
+   O script gera `SECRET_KEY` ao criar o arquivo. Um `.env` existente é preservado. Não publique nem compartilhe esse arquivo.
+
+4. Prepare as tabelas, crie sua conta e inicie:
+
+   ```powershell
+   .\.venv\Scripts\python.exe -m scripts.preparar_banco --demo
+   .\.venv\Scripts\python.exe -m scripts.criar_usuario
+   .\.venv\Scripts\python.exe app.py
+   ```
+
+Abra **http://127.0.0.1:5000**. Para o primeiro acesso, crie uma conta de professor e selecione as ofertas de turma/disciplina no comando de criação de usuários. Não existe senha padrão.
+
+`--demo` é opcional: acrescenta 35 alunos fictícios com prefixo `IADEMO-`, VA1 concluída, VA2 parcial e VA3 pendente. Para preparar a estrutura sem esses alunos, execute sem `--demo`.
+
+O preparador aplica as migrações e configura as cinco disciplinas iniciais do curso. Não é necessário executar manualmente cada SQL. `sql/base_original_manual.sql` é uma referência da estrutura original, não um comando de atualização para banco já preenchido.
+
+### Atualizar uma instalação existente
+
+Faça backup do banco, encerre o servidor com `Ctrl+C` e execute na raiz:
 
 ```powershell
-.venv\Scripts\python.exe preparar_banco.py --demo
-.venv\Scripts\python.exe app.py
+git pull
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m scripts.preparar_banco
+.\.venv\Scripts\python.exe app.py
 ```
 
-Atualize o navegador com `Ctrl+F5`. As contas antigas permanecem como professor. Se houver apenas um professor e nenhum vínculo configurado, a preparação vincula essa conta às cinco disciplinas da turma inicial de IA. As contas seguintes recebem as disciplinas escolhidas no cadastro local.
+Atualize o navegador com `Ctrl+F5`. Os comandos de preparação agora ficam em `scripts/` e são executados com `-m scripts.nome_do_comando`. O `.env` e a `.venv` continuam na raiz. O comando para iniciar permanece `python app.py`.
 
-Nesta instalação local, a atualização já foi executada com backup prévio em `../backups/`; as contas e os 1.120 registros antigos por bimestre foram preservados. O backup contém dados privados e não faz parte do ZIP.
+## Contas e primeiro acesso
 
-## Primeira instalação no Windows
+**Professor:** conta criada pelo responsável usando `scripts.criar_usuario`, com atribuição das disciplinas e turmas. Não há cadastro público de professor.
 
-Pré-requisitos: Python 3.11+ e PostgreSQL. Crie o banco `simpa` no pgAdmin. No PowerShell **nesta pasta**:
+**Aluno pelo site:** primeiro, o professor cadastra a ficha acadêmica em **Alunos**. Depois abre o perfil e usa **Gerar código de cadastro**. O aluno recebe esse código diretamente do professor e acessa **Cadastrar-se no SIMPA**, no login, informando matrícula, e-mail institucional, código, senha e confirmação.
 
-```powershell
-py -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe configurar_env.py
-```
+O código vale **48 horas**, tem uso único e é armazenado como hash. Gerar outro invalida o anterior. A conta usa a matrícula existente e define o perfil de aluno no servidor. Não cria outra ficha acadêmica. O comando local também permite criar contas de aluno vinculadas às matrículas.
 
-Preencha `DB_PASSWORD` no `.env` com a senha do PostgreSQL e confira `DB_HOST`, `DB_PORT`, `DB_NAME` e `DB_USER`. O `.env` não deve ser compartilhado nem enviado ao Git. O script gera `SECRET_KEY` sem sobrescrever um `.env` existente.
+## Regras acadêmicas
 
-```powershell
-.venv\Scripts\python.exe preparar_banco.py --demo
-.venv\Scripts\python.exe criar_usuario.py
-.venv\Scripts\python.exe app.py
-```
-
-Abra **http://127.0.0.1:5000**. O servidor usa somente o endereço local. Não há senha padrão.
-
-## Criar contas
-
-Execute `criar_usuario.py` no terminal:
-
-- **1 — Professor:** informe os dados e escolha as ofertas de turma/disciplina, pelos números apresentados ou `todas`.
-- **2 — Aluno:** informe uma matrícula já cadastrada. A conta fica vinculada a esse aluno; nomes e notas de colegas não são disponibilizados.
-
-Na demonstração, as matrículas começam com `IADEMO-`, por exemplo `IADEMO-20260001`. Cada pessoa define sua própria senha. Não existe escolha de perfil nem criação de conta de professor pelo navegador.
-
-## Cadastrar turma — versão 2.3
-
-Entre como professor e abra **Turmas → Cadastrar turma**. Informe nome, identificador, ano letivo, semestre e situação. Selecione ao menos uma das disciplinas ativas já vinculadas à sua conta. O mesmo identificador pode ser reutilizado em outro ano/semestre, mas não no mesmo contexto acadêmico.
-
-A criação é feita em uma transação: turma, ofertas, vínculo do professor e composição inicial de VA1/VA2/VA3. A360, VRAU e AFE ficam preparados para cada disciplina; APS e Dailys serão cadastradas pelo professor. Não são criados alunos, notas ou credenciais. A nova turma já aparece no cadastro de alunos e suas disciplinas aparecem em Avaliações. Outro professor precisa receber seu próprio vínculo para acessá-la.
-
-O formulário mantém os dados preenchidos quando há erro de validação ou duplicidade. Também existe `POST /api/turmas`; formato em `/api/docs`. Usa as tabelas existentes: não é necessário executar migrações para esta funcionalidade. Após atualizar o código, reinicie o servidor se ele ainda estiver executando uma versão anterior.
-
-## Regras implementadas
+O curso trabalha com **VA1, VA2 e VA3**, cada uma na escala de 0 a 100 pontos. A composição adotada ainda é **provisória**, pois depende de confirmação das regras institucionais.
 
 | Componente | Máximo inicial por VA |
-|---|---:|
-| APS + Dailys | 30 |
+| --- | ---: |
+| Bloco de APS, Dailys e atividades personalizadas | 30 |
 | A360 | 10 |
 | VRAU | 30 |
 | AFE | 30 |
-| **VA** | **100** |
+| **Total** | **100** |
 
-- Cada APS vale inicialmente até 2 pontos; cada Daily, até 3. O professor cadastra a quantidade necessária, sem fixar seis encontros no sistema.
-- APS e Dailys não podem distribuir mais que o limite do bloco. O sistema não corta notas nem redistribui pontos automaticamente.
-- A360, VRAU e AFE são preparados uma vez em cada VA. VRAU corresponde à prova de até 30 pontos informada pelo grupo; o professor lança o resultado, sem correção automática das 15 questões.
-- Campo vazio é **pendente**. Zero é uma nota válida e participa dos totais.
-- O resultado da VA permanece **parcial** enquanto faltarem notas, distribuição do bloco ou encerramento pelo professor.
-- Para encerrar uma VA, o bloco de APS + Dailys deve estar todo distribuído e todas as notas dos matriculados devem estar lançadas.
-- VA encerrada fica bloqueada para edição. O professor responsável pode reabri-la para corrigir e depois encerrá-la novamente.
-- A média final é `(VA1 + VA2 + VA3) / 3`, somente após as três estarem encerradas. VA pendente não entra como zero.
-- O professor pode ajustar os limites na seção de composição. O total permanece em 100; não é permitido reduzir um limite abaixo de nota já lançada nem mudar o valor unitário de APS/Daily já cadastrada.
-- A média mínima de aprovação permanece **não definida**. A aplicação não classifica aprovado/reprovado nem calcula risco usando os limites antigos de 0–10.
+- APS vale inicialmente até 2 pontos; Daily, até 3. A quantidade de atividades é cadastrada pelo professor.
+- **Personalizado** permite outro valor máximo, com até duas casas decimais. Usa o mesmo bloco das atividades; não é bônus acima dos 100 pontos.
+- Nenhuma nota pode ultrapassar o máximo da atividade. O sistema não corta nem redistribui pontos automaticamente.
+- Campo vazio é pendência; zero é nota válida. Pendência pode indicar falta de lançamento e não comprova falta de entrega.
+- Encerrar a VA exige distribuição completa do bloco e todas as notas dos matriculados. A VA encerrada fica bloqueada; o professor responsável pode reabri-la.
+- Média final por disciplina: **(VA1 + VA2 + VA3) ÷ 3**, após as três VAs completas e encerradas.
+- O critério de aprovação ainda não foi informado. O sistema não declara aprovação/reprovação nem inventa um corte de risco.
 
-## O que cada perfil vê
+A seção de edição da composição foi retirada de Avaliações. As validações e a configuração das regras permanecem no backend. Dados antigos por bimestre são preservados, sem conversão automática para as VAs.
 
-**Professor:** dashboard, alunos, turmas, disciplinas, avaliações e importação, sempre limitados às suas ofertas. Em Avaliações, escolhe turma/disciplina e VA, cria APS/Daily e abre a planilha de notas de cada atividade.
+## Estatística e predição
 
-**Aluno:** Meu painel e Minhas notas. Consulta as cinco disciplinas em que estiver matriculado, os resultados de cada VA, os componentes, as atividades pendentes e a média final quando disponível.
+Os módulos Python calculam média, mediana, variância e desvio-padrão populacionais (divisor `n`). Valores ausentes são excluídos; zeros participam dos cálculos. No curso de IA, frequência agregada é **soma das presenças ÷ soma das aulas registradas × 100**.
 
-Permissões são conferidas novamente no servidor a cada requisição. Esconder os links do menu é apenas parte da interface: a API também bloqueia acessos e alterações sem vínculo. Uma conta inativada perde acesso mesmo que ainda tenha cookie de sessão.
+Também há correlação de Pearson e regressão linear simples. Correlação descreve associação, não prova causa. As previsões exigem histórico suficiente e são estimativas exploratórias; **R² descreve ajuste ao histórico, não precisão futura**. No curso, usam VAs encerradas até o período consultado e não criam VA4.
 
-## Dados de demonstração e preservação
+Os cálculos são executados em Python e expostos pela API Flask. O navegador apresenta os resultados em indicadores e gráficos. O modelo de linguagem usa esses resultados para explicar e sugerir acompanhamento.
 
-As disciplinas do curso são Álgebra Linear e Aplicações; Desenvolvimento Orientado a Objetos; Design de Soluções; Estatística Aplicada e Modelagem de Soluções; Fundamentos de Redes e Segurança da Informação.
+## Assistente acadêmico
 
-`--demo` acrescenta 35 alunos fictícios na turma de IA: VA1 concluída, VA2 parcial e VA3 pendente. A quantidade de seis encontros usada no exemplo da VA1 é somente uma demonstração possível. Os cadastros usam prefixo `IADEMO-`. Nenhuma conta de aluno ou senha compartilhada é criada automaticamente.
+O assistente usa **Gemma 4 pela API do Ollama Cloud**, conectado pelo LangChain. Para habilitá-lo, configure no `.env`:
 
-As tabelas antigas de resultados por bimestre são preservadas. Não há conversão automática de notas antigas em VAs ou de 0–10 para componentes de 100 pontos, pois isso inventaria uma composição que não foi informada. A nova demonstração é separada dos dados anteriores e não os sobrescreve.
-
-## Importação
-
-CSV UTF-8 e XLSX, até 2 MB e 10.000 linhas. Baixe o modelo na tela:
-
-- Alunos: `matricula;nome;email;turma_id`.
-- Notas: `matricula;atividade_id;nota`.
-
-A atividade deve existir e pertencer à disciplina do professor. O aluno precisa estar matriculado na turma. A nota não pode ultrapassar o máximo da atividade. A importação recusa notas já preenchidas; faça correções na tela Avaliações. Erros por linha são relatados; falha estrutural impede a carga inteira.
-
-## Organização e verificação
-
-`app.py` controla páginas e API; `repositorio.py` reúne SQL e permissões; `academico.py` define pontos e `ResultadoVA`; `servico_analitico.py` integra VAs e os módulos estatísticos do grupo. Os três arquivos em `sql/` fazem migrações aditivas. `autenticacao.py` e `db.py` mantêm a base de login do grupo.
-
-```powershell
-.venv\Scripts\python.exe -m unittest discover -s tests -v
+```dotenv
+OLLAMA_BASE_URL=https://ollama.com
+OLLAMA_MODEL=gemma4
+OLLAMA_API_KEY=sua_chave_do_ollama
 ```
 
-São 34 testes: 13 de cálculo/leitura e 21 de integração. Integração exige `SIMPA_TEST_DSN` apontando **somente para banco descartável**, porque cria contas, turmas e notas de teste. Não use essa variável na base da apresentação.
+Reinicie após alterar a chave. Essa configuração usa o serviço Cloud; não exige baixar o modelo localmente. Sem chave, as outras áreas continuam disponíveis.
 
-Os 19 testes passaram em PostgreSQL isolado/PGlite. No Edge, foram verificados ambos os perfis, filtros de VA, lançamento de nota zero, privacidade das notas, bloqueio de escrita pelo aluno e layout de 390 px sem transbordamento da página. A migração local também foi aplicada no PostgreSQL 18 instalado, após backup.
+O Gemma solicita ferramentas de busca e consulta. O código valida argumentos e permissões, consulta o PostgreSQL e calcula os indicadores. O modelo recebe os resultados e redige a resposta em Markdown. Não há ferramenta de SQL livre, execução de comandos ou alteração de notas.
 
-Após a integração do dataset, os 29 testes passaram em banco PGlite/PostgreSQL isolado. A API foi conferida no PostgreSQL 18 local e o fluxo seletor → API → gráfico foi verificado no navegador. O registro em `docs/DATASET_PROFESSOR.md` distingue essa verificação das verificações anteriores do curso de IA.
+Fontes e números são verificados antes da exibição. Isso ajuda a bloquear valores inventados, mas não garante que toda interpretação textual esteja correta. Pergunta, trecho de conversa e resultados autorizados necessários são enviados ao Ollama Cloud.
 
-Em 01/11/2026, após o cadastro de turmas, os 34 testes passaram no banco descartável. Os novos casos verificam duplicidade por contexto, campos obrigatórios, vínculo às disciplinas, preparação das VAs, ausência de notas inventadas, integração ao cadastro de alunos, perfis e CSRF. No navegador foi executado o fluxo Turmas → Cadastrar turma → salvar → consultar na lista, somente no banco de testes.
+O histórico lateral permite criar, reabrir e apagar chats com confirmação. As mensagens ficam no PostgreSQL, privadas por conta, perfil e vínculo. O modelo recebe as **últimas oito mensagens anteriores** — quatro perguntas e quatro respostas — além da pergunta atual, instruções e seleção acadêmica. As consultas podem ser refeitas para obter valores atuais.
 
-Veja `docs/MARCO_2.md`, `docs/APRESENTACAO.md` e `/api/docs` após entrar como professor.
+Para estudar ou personalizar:
+
+- [Prompt editável](prompts/assistente_academico.md): tom e instruções, relidos a cada pergunta.
+- [Ferramentas e execução](simpa/assistente_agente.py): `@tool`, `bind_tools`, chamadas ao Gemma e validação.
+- [Consultas e permissões](simpa/repositorio.py): SQL e escopo acadêmico.
+- [Histórico persistente](simpa/chats.py): leitura e gravação das conversas.
+- [Guia do assistente](docs/ASSISTENTE_ACADEMICO.md): arquitetura e limites.
+
+## Dataset do professor
+
+São **15 CSVs normalizados**, com manifesto e hashes, de uma base **inteiramente sintética de Engenharia de Software**: 120 alunos, 40 disciplinas e 2.949 registros acadêmicos. Essa base é separada das VAs de IA e não cria contas.
+
+Após preparar o banco, carregue com:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.importar_dataset_professor
+```
+
+A carga usa uma transação no schema `simpa_dataset`. Repetir a mesma carga não duplica registros. No Dashboard, use **Base de dados → Dataset do professor**. Selecione semestre e aluno; o histórico individual usa médias finais por semestre e pode apresentar projeção quando há ao menos dois semestres concluídos.
+
+Semestre em andamento usa notas parciais. A frequência dessa base é a média dos percentuais disponíveis, pois não há contagem de aulas/presenças para esse cálculo. Indicadores de risco e desfechos fornecidos no material são referências recebidas, não previsões produzidas pelo SIMPA. Veja o [guia do dataset](docs/DATASET_PROFESSOR.md).
+
+## Importação pela interface
+
+CSV UTF-8 e XLSX, até **2 MB e 10.000 linhas**, usando os modelos para download na tela:
+
+| Tipo | Colunas obrigatórias |
+| --- | --- |
+| Alunos | `matricula`, `nome`, `email`, `turma_id` |
+| Notas por atividade | `matricula`, `atividade_id`, `nota` |
+
+A atividade deve existir e o aluno precisa pertencer à turma autorizada. Notas preenchidas são recusadas; correções são feitas em Avaliações. Erros são informados por linha; arquivo com falha estrutural não é importado. A carga dos CSVs normalizados do professor usa o comando específico acima, não esse formulário.
+
+## API e testes
+
+As rotas usam a mesma autenticação e permissões das telas. Alterações exigem token CSRF. A referência de endpoints está em **`/api/docs`**, após entrar como professor. **`/saude`** informa o estado básico e a versão.
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+Em 05/11/2026, os **81 testes passaram** após a reorganização, em um banco PostgreSQL descartável novo. A verificação está em [docs/verificacao_organizacao.json](docs/verificacao_organizacao.json).
+
+Os testes de integração só executam quando `SIMPA_TEST_DSN` aponta para um **banco descartável**, pois criam usuários, turmas, atividades e notas. Sem a variável, esses casos são pulados. Para a suíte completa, crie um banco separado e configure somente no terminal de testes:
+
+```powershell
+$env:SIMPA_TEST_DSN='postgresql://usuario:senha@localhost:5432/simpa_teste'
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+Remove-Item Env:SIMPA_TEST_DSN
+```
+
+**Não use o banco da apresentação ou de uso real.** O provedor é simulado nos testes automatizados. Registros de verificações anteriores com o Gemma real, usando dados fictícios, estão em `docs/`.
+
+## Documentação
+
+- [Requisitos por aba — PDF](docs/SIMPA_Marco_2_Requisitos_Por_Aba.pdf)
+- [Descrição do Marco 2](docs/MARCO_2.md)
+- [Integração e autoria](docs/INTEGRACAO_E_AUTORIA.md)
+- [Roteiro técnico da apresentação](docs/APRESENTACAO.md)
+- [Capturas de verificação](docs/capturas/)
+- [Wireframes originais](docs/wireframes/)
+
+O projeto está em desenvolvimento para fins acadêmicos. A execução padrão é local; o servidor de desenvolvimento do Flask não representa uma implantação pública de produção.

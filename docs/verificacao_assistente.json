@@ -1,0 +1,58 @@
+{
+  "data": "2026-11-04",
+  "versao": "2.6",
+  "modelo": "Gemma 4 via API Ollama Cloud",
+  "testes": {
+    "automatizados": 72,
+    "resultado": "todos passaram em PostgreSQL descartavel",
+    "novos_testes_agente": 13,
+    "cloud_real": {
+      "cenarios": 7,
+      "aprovados": 7,
+      "base": "apenas dados ficticios",
+      "observacao": "Executados na versão 2.5; não repetidos para esta mudança de histórico."
+    },
+    "novos_testes_historico": 6
+  },
+  "permissoes": {
+    "aluno_consulta_colega": "403 antes de chamar IA",
+    "aluno_consulta_dataset": "403 antes de chamar IA",
+    "professor_consulta_disciplina_de_outro": "403",
+    "autenticacao_csrf": "reutilizados do SIMPA"
+  },
+  "evidencias": {
+    "consulta_real_por_nome": "disciplinas e alunos localizados por ferramentas",
+    "continuacao": "frequencia atualizada da mesma disciplina",
+    "markdown": "HTML bruto desativado e HTML sanitizado",
+    "prompt_editavel": "prompts/assistente_academico.md, relido em cada pergunta",
+    "historico": "PostgreSQL privado por conta, perfil e vínculo; persiste após novo login e recarga",
+    "limite": "numero existente e fonte valida nao provam toda interpretacao textual"
+  },
+  "navegador": {
+    "pergunta": "o que voce pode me responder?",
+    "modelo": "Gemma real",
+    "resultado": "capacidades com formatacao e sem despejar notas",
+    "console_erros": 0,
+    "captura": "capturas/assistente-markdown.png"
+  },
+  "instalacao_local": {
+    "servidor_5000": "versao 2.6",
+    "migracoes_necessarias": "005_historico_chats.sql aplicada",
+    "dados_reais": "somente criação das tabelas de histórico; nenhum dado acadêmico alterado",
+    "documentacao_pdf_anterior": "preservada"
+  },
+  "arquitetura": "Gemma com ferramentas autorizadas, prompt Markdown e histórico privado em PostgreSQL",
+  "historico_navegador": {
+    "banco": "descartável",
+    "modelo": "simulado, sem uso do Cloud",
+    "verificado": [
+      "criar",
+      "alternar",
+      "recarregar seleção",
+      "cancelar exclusão"
+    ],
+    "exclusao": "verificada por integração, incluindo cascata e ausência de ressurreição",
+    "console_erros": 0,
+    "captura": "capturas/assistente-historico.png"
+  }
+}

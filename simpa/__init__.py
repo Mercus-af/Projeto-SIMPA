@@ -1,0 +1,1 @@
+"""Código da aplicação SIMPA."""

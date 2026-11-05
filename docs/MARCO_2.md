@@ -65,7 +65,7 @@ O painel do aluno apresenta suas disciplinas, VA1/VA2/VA3 e média final quando 
 
 ## Segurança e integração verificável
 
-Há hash de senha, sessão assinada e token CSRF. A conta é conferida no banco a cada requisição; conta inativa perde acesso. O aluno não recebe notas de colegas nem pode escrever na API. O professor não lança notas em oferta sem vínculo. A criação de contas e seus vínculos é feita pelo script local, sem cadastro público com escolha de perfil.
+Há hash de senha, sessão assinada e token CSRF. A conta é conferida no banco a cada requisição; conta inativa perde acesso. O aluno não recebe notas de colegas nem pode escrever na API. O professor não lança notas em oferta sem vínculo. Alunos podem criar a conta pelo link Cadastrar-se no SIMPA usando matrícula, e-mail e código de uso único gerado pelo professor da turma. O código vale 48 horas. A conta é vinculada à ficha acadêmica existente, com perfil de aluno definido pelo servidor. Contas de professor e seus vínculos continuam sendo criados pelo responsável no script local.
 
 A API `/api/analises?va=2` devolve os indicadores, a dispersão, os resultados de VAs, resumos, correlação e previsões dentro do escopo do usuário. `/api/meu-boletim` é exclusivo do aluno. A importação valida atividade, matrícula, máximo, vínculo e duplicidade de nota preenchida, usando transação e relatório de erros.
 

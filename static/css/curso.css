@@ -29,3 +29,5 @@
 .curso-locked{font-size:11px;color:var(--slate);padding:10px 0}
 @media(max-width:720px){.curso-components{grid-template-columns:repeat(2,minmax(0,1fr))}.curso-panel{padding:17px}.curso-small-grid,.curso-activity-form .form-grid{grid-template-columns:1fr}.curso-toolbar{display:grid;grid-template-columns:1fr 100px}.curso-toolbar .button{grid-column:1/-1}.curso-boletim-title{flex-direction:column}.curso-va-head{flex-wrap:wrap}.curso-toolbar label{min-width:0}}
 .turma-disciplinas{border:0;padding:0;min-width:0}.turma-disciplinas legend{font-size:13px;font-weight:600;color:var(--onyx);padding:0;margin-bottom:8px}.turma-disciplinas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px;margin-top:15px}.turma-disciplina{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:9px;padding:13px;cursor:pointer}.turma-disciplina input{accent-color:var(--slate);margin-top:3px}.turma-disciplina span{display:grid;gap:5px}.turma-disciplina strong{font-size:11px;color:var(--onyx);font-weight:600}.turma-disciplina small{font-size:10px;color:var(--muted)}
+
+#campo-maximo[hidden]{display:none}

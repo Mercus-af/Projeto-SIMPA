@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastre-se · SIMPA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-page">
+  <section class="login-visual">
+    <a class="brand brand-light" href="{{ url_for('login') }}"><span class="brand-mark">S</span><span><strong>SIMPA</strong><small>Academic intelligence</small></span></a>
+    <div class="login-message"><p class="eyebrow">INTELIGÊNCIA ACADÊMICA</p><h1>Dados que ajudam<br>o futuro a acontecer.</h1><p>Uma visão mais clara do desempenho acadêmico, em um só lugar.</p></div>
+    <div class="gradient-orb"></div><div class="login-footnote">Sistema Inteligente de Monitoramento e Predição Acadêmica</div>
+  </section>
+  <section class="login-form-side">
+    <form class="login-card cadastro-card" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="login-monogram">S</div><p class="eyebrow">PRIMEIRO ACESSO</p><h2>Cadastre-se no SIMPA</h2>
+      <p class="muted">Crie sua conta de aluno com o código recebido do professor.</p>
+      {% if erro %}<div class="flash flash-erro" role="alert">{{ erro }}</div>{% endif %}
+      <label class="field-label" for="matricula">Matrícula</label><input class="input" id="matricula" name="matricula" maxlength="30" value="{{ valores.matricula }}" autocomplete="username" required>
+      <label class="field-label" for="email">E-mail institucional</label><input class="input" id="email" name="email" type="email" maxlength="254" value="{{ valores.email }}" autocomplete="email" required>
+      <label class="field-label" for="codigo">Código de cadastro</label><input class="input" id="codigo" name="codigo" minlength="20" maxlength="100" autocomplete="off" spellcheck="false" required><p class="cadastro-ajuda">Peça o código ao professor. Sua matrícula e seu e-mail devem estar cadastrados na instituição.</p>
+      <label class="field-label" for="password">Senha</label><div class="password-wrap"><input class="input" id="password" name="senha" type="password" minlength="8" maxlength="128" autocomplete="new-password" placeholder="Mínimo de 8 caracteres" required><button class="password-toggle" id="passwordToggle" type="button" aria-label="Mostrar ou ocultar a senha">Mostrar</button></div>
+      <label class="field-label" for="confirmacao">Confirmar senha</label><input class="input" id="confirmacao" name="confirmacao" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+      <button class="button button-primary button-full cadastro-enviar" type="submit">Criar minha conta <span>→</span></button>
+      <p class="login-note">Já tem conta? <a class="text-link" href="{{ url_for('login') }}">Entrar no SIMPA</a></p>
+    </form>
+  </section>
+  <script>
+    // Botão para mostrar ou ocultar a senha (RF01). Por padrão ela fica oculta.
+    var campo = document.getElementById("password");
+    var botao = document.getElementById("passwordToggle");
+    botao.addEventListener("click", function () {
+      var oculta = campo.type === "password";
+      campo.type = oculta ? "text" : "password";
+      botao.textContent = oculta ? "Ocultar" : "Mostrar";
+    });
+  </script>
+</body>
+</html>

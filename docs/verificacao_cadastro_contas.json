@@ -1,0 +1,26 @@
+{
+  "data": "2026-11-04",
+  "versao": "2.8",
+  "testes": 81,
+  "novos_casos_cadastro": 7,
+  "banco": "PostgreSQL descartável",
+  "resultado": "todos passaram",
+  "fluxo": "Professor gera código no perfil do aluno; aluno cadastra senha no site e entra no login",
+  "seguranca": [
+    "perfil aluno fixo no servidor",
+    "matrícula e e-mail existentes",
+    "código aleatório, hash no banco, 48h e uso único",
+    "novo código invalida anterior",
+    "CSRF",
+    "senha com hash, 8 a 128 caracteres",
+    "transação e bloqueio de linha contra reutilização",
+    "nenhuma senha ou código devolvido em validação de erro"
+  ],
+  "migracao": "007_convites_cadastro.sql cria tabela; não cria nem altera usuários existentes",
+  "navegador": {
+    "fluxo": "Login → Cadastrar-se no SIMPA → formulário completo",
+    "console_erros": 0,
+    "cadastro_real": "nenhuma conta criada no banco real",
+    "captura": "capturas/cadastro-conta.png"
+  }
+}

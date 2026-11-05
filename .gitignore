@@ -11,3 +11,16 @@ data/*.db-*
 *.dump
 *.log
 ~$*
+
+# Dados locais, credenciais e artefatos privados
+.envrc
+.venv*/
+venv/
+backups/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.zip

@@ -5,6 +5,9 @@
 <tr><td>GET</td><td><a href="/api/analises?va=2">/api/analises?va=2</a></td><td>Estatística, resultados, correlação e regressão em escala 0–100</td></tr>
 <tr><td>GET</td><td><a href="/api/dataset-professor">/api/dataset-professor</a></td><td>Professor: base sintética de Engenharia de Software, com filtros semestre (AAAA-1 ou AAAA-2) e aluno_id. Estatísticas por tentativa, cobertura, Pearson e histórico individual com regressão. Não converte notas em VAs.</td></tr>
 <tr><td>GET</td><td>/api/meu-boletim</td><td>Somente aluno: suas VAs e componentes</td></tr>
+<tr><td>GET</td><td>/api/assistente/status</td><td>Informa se a chave Cloud está configurada, sem expô-la. Não confirma a validade da credencial.</td></tr>
+<tr><td>GET</td><td>/api/assistente/opcoes?base=curso</td><td>Filtros autorizados da conta. base=dataset é exclusivo de professores.</td></tr>
+<tr><td>POST</td><td>/api/assistente</td><td>Gemma 4 no Ollama Cloud via LangChain. Pergunta, base, va e filtros opcionais turma_id, disciplina_id e aluno_id. Dataset usa semestre e aluno_id. Aluno não pode consultar colegas. Retorna fatos com fonte e ações fundamentadas; nunca altera registros.</td></tr>
 <tr><td>GET / POST</td><td>/api/alunos</td><td>Somente professor: consulta ou cadastro nas suas turmas</td></tr>
 <tr><td>GET / POST</td><td>/api/turmas</td><td>Consulta dos vínculos disponíveis; professor pode cadastrar turma e selecionar suas disciplinas ativas</td></tr>
 <tr><td>GET</td><td>/api/disciplinas</td><td>Disciplinas disponíveis no vínculo acadêmico</td></tr>
@@ -17,8 +20,9 @@
 </tbody></table></div>
 <p class="curso-note">Filtros de análise: <code>turma_id</code>, <code>disciplina_id</code> e <code>va</code> (1, 2 ou 3). VA2 é o padrão. Bimestre não é mais aceito.</p>
 <p class="curso-note">POST JSON: <code>Content-Type: application/json</code> e <code>X-CSRF-Token</code>. O token da sessão está em <code>document.querySelector('meta[name="csrf-token"]').content</code>. Upload usa multipart, campo <code>arquivo</code>.</p>
-<p class="curso-note">Criar atividade: <code>{"turma_id":1,"disciplina_id":2,"va":2,"tipo":"APS","titulo":"APS da aula"}</code>. Substitua os IDs pelos vínculos da conta.</p>
+<p class="curso-note">Criar atividade: <code>{"turma_id":1,"disciplina_id":2,"va":2,"tipo":"APS","titulo":"APS da aula"}</code>. Para valor personalizado, use <code>"tipo":"PERSONALIZADA","maximo":7.5</code>. O valor entra no mesmo bloco de atividades. Substitua os IDs pelos vínculos da conta.</p>
 <p class="curso-note">Cadastrar turma: <code>{"identificador":"IA-NOTURNO","nome":"Turma de IA","ano_letivo":2026,"semestre":2,"situacao":"ativa","disciplinas":[1,2]}</code>. Use IDs de disciplinas ativas da sua conta; ao menos uma é obrigatória. O cadastro prepara as três VAs e vincula o professor às disciplinas selecionadas.</p>
 <p class="curso-note">Lançar notas: <code>{"notas":[{"aluno_id":3,"nota":0},{"aluno_id":4,"nota":null}]}</code>. Zero é nota válida; null significa pendente.</p>
+<p class="curso-note">Assistente: <code>{"pergunta":"Quais são minhas pendências?","base":"curso","va":2}</code>. O retorno inclui <code>conversa_id</code>, <code>resposta_markdown</code>, <code>resposta_html</code> sanitizado e <code>fontes</code>. Para continuar, envie o mesmo conversa_id; o servidor vincula a conversa à conta, sessão e filtros. Não recebe perfil, chave ou histórico editável do cliente. 429: ocupado/limite; 503: credencial, provedor ou resposta que não passou na verificação. O comportamento é editável em <code>prompts/assistente_academico.md</code>.</p>
 <p class="curso-note">Retornos: 201 criado; 200 consultado/salvo; 400 token de formulário inválido; 401 sem login; 403 sem permissão; 409 duplicidade; 422 regra de negócio; 503 banco indisponível.</p></section>
 {% endblock %}

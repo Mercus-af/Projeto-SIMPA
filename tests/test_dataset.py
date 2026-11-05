@@ -5,12 +5,12 @@ from contextlib import closing
 from statistics import mean, median, pvariance
 from uuid import uuid4
 
-import db
-from analise_historica import analisar_historico
-from app import criar_app
-from importacao.validacoes import DadosInvalidos
-from importar_dataset_professor import importar, ler_dataset
-from preparar_banco import preparar
+from simpa import db
+from simpa.analise_historica import analisar_historico
+from simpa.app import criar_app
+from simpa.importacao.validacoes import DadosInvalidos
+from scripts.importar_dataset_professor import importar, ler_dataset
+from scripts.preparar_banco import preparar
 
 
 def exemplo():
@@ -131,6 +131,16 @@ class IntegracaoDataset(unittest.TestCase):
         self.assertEqual(c.get('/dashboard/dataset-professor').status_code, 200)
         self.assertEqual(c.get('/api/dataset-professor?aluno_id=99999999').status_code, 422)
         self.assertEqual(c.get('/api/dataset-professor?semestre=VA2').status_code, 422)
+
+    def test_assistente_recupera_previsao_historica_sem_chamar_cloud(self):
+        from simpa.assistente import preparar_contexto
+        c=preparar_contexto({'id':self.usuarios['professor'],'perfil':'professor'},
+                           {'base':'dataset','semestre':'2026-2','aluno_id':120})
+        previsao=next(f for f in c['fatos'] if 'Projeção linear' in f['texto'])
+        self.assertIn('67,29',previsao['texto'])
+        self.assertIn('7 semestres',previsao['texto'])
+        self.assertIn('não acerto futuro',previsao['texto'])
+        self.assertTrue(any(previsao['id'] in a['fatos'] for a in c['acoes']))
 
     def test_historico_real_do_dataset_tem_previsao_executavel(self):
         c = self.cliente('professor')

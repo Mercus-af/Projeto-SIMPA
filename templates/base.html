@@ -17,6 +17,7 @@
     <div class="nav-label">PRINCIPAL</div>
     <nav class="nav">
       <a class="{{ 'active' if request.endpoint in ['dashboard','dashboard_dataset'] else '' }}" href="{{ url_for('dashboard') }}"><span class="nav-icon">◫</span>{{ 'Dashboard' if eh_professor else 'Meu painel' }}</a>
+      <a class="{{ 'active' if request.endpoint == 'assistente_academico' else '' }}" href="{{ url_for('assistente_academico') }}"><span class="nav-icon">✧</span>Assistente acadêmico</a>
       {% if eh_professor %}
       <a class="{{ 'active' if request.endpoint in ['alunos','cadastro_aluno','perfil_aluno'] else '' }}" href="{{ url_for('alunos') }}"><span class="nav-icon">♙</span>Alunos</a>
       <a class="{{ 'active' if request.endpoint in ['turmas','cadastro_turma'] else '' }}" href="{{ url_for('turmas') }}"><span class="nav-icon">▦</span>Turmas</a>
