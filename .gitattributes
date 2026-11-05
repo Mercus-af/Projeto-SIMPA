@@ -7,4 +7,4 @@
 *.bat text eol=crlf
 .env.example text eol=lf
 # Preserve os bytes usados na validação SHA-256 do dataset fornecido.
-data/dataset_professor/** -text
+data/dataset_professor/** -text whitespace=cr-at-eol
